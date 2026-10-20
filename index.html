@@ -175,6 +175,38 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
 @media (max-width:800px){.paper-details{top:-13px}}
 @media (max-width:490px){.paper-details{top:-9px}}
 @media print{.paper-details{top:-6mm!important}}
+
+/* TMM: page-specific composition summary immediately under the title. */
+.paper-header{position:relative}
+.paper-header h3{margin-bottom:5px}
+.paper-subtitle{font-size:clamp(9px,1.15vw,12px);line-height:1.45;text-align:center;max-width:100%;margin:0 0 5px;min-height:1.4em;overflow-wrap:anywhere;word-break:keep-all}
+.paper-subtitle-item{display:inline;white-space:normal}
+.paper-subtitle-separator{color:#777;white-space:normal}
+.paper-details{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-top:auto;min-height:0!important;top:0!important;position:static!important}
+.paper-details .student-name{margin:0;flex:1;min-width:0}
+.paper-details .qr-box{flex:none;margin-left:auto}
+/* Flexible content: a long equation wraps within its own column; the answer moves below if needed. */
+.question{display:grid;grid-template-columns:2.1em minmax(0,1fr);align-content:center;align-items:start;column-gap:5px;min-width:0;min-height:0;overflow:visible}
+.question-number{grid-column:1;align-self:start;flex:none;white-space:nowrap}
+.question-body{grid-column:2;display:flex;flex-wrap:wrap;align-items:baseline;align-content:center;column-gap:6px;row-gap:2px;min-width:0;max-width:100%}
+.question-expression{flex:0 1 auto!important;width:auto!important;max-width:100%;min-width:0;overflow-wrap:anywhere;word-break:normal;white-space:normal}
+.question-body .answer-line,.question-body .answer-value{flex:0 1 var(--answer-width,72px);width:var(--answer-width,72px);min-width:0;max-width:100%;margin:0!important}
+.question.long-question{font-size:clamp(8px,1.13vw,13px)}
+.question-grid{align-items:stretch}
+@media(max-width:800px){.paper-subtitle{font-size:clamp(7px,1.6vw,10px);line-height:1.3}.question{column-gap:2px}.question-body{column-gap:2px;row-gap:1px}}
+@media(max-width:490px){.paper-subtitle{font-size:7px}.paper-header h3{margin-bottom:2px}.question-body .answer-line,.question-body .answer-value{flex-basis:clamp(12px,4vw,32px);width:clamp(12px,4vw,32px)}.question.long-question{font-size:7px}}
+@media print{
+ .paper-header{min-height:38mm!important;height:auto!important}
+ .paper-header h3{margin-bottom:2mm!important}
+ .paper-subtitle{font-size:8pt!important;line-height:1.4!important;margin:0 0 2mm!important;min-height:0!important}
+ .paper-details{min-height:0!important;top:0!important;position:static!important}
+ .paper-details .qr-box{width:26mm!important;height:26mm!important}
+ .question{display:grid!important;grid-template-columns:6mm minmax(0,1fr)!important;column-gap:1.2mm!important}
+ .question-body{display:flex!important;flex-wrap:wrap!important;column-gap:1.5mm!important;row-gap:.4mm!important}
+ .question-expression{flex:0 1 auto!important;max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important}
+ .question-body .answer-line,.question-body .answer-value{flex:0 1 var(--answer-print,20mm)!important;width:var(--answer-print,20mm)!important;max-width:100%!important;min-width:0!important;margin:0!important}
+ .question.long-question{font-size:8.5pt!important;line-height:1.3!important}
+}
 </style>
 </head>
 <body>
@@ -1624,7 +1656,7 @@ global.QRCode = requireLocal('index');
        const expression=vals.map((n,i)=>i===0?String(n):`${OP[ops[i-1]]} ${n}`).join(' ');
        if(seen.has(expression))continue;
        seen.add(expression);
-       made.push({expression,answer:calc.answer});
+       made.push({expression,answer:calc.answer,specIndex:specs.indexOf(spec)});
      }
      if(made.length<spec.count)return {problems:[],error:`「${labelTemplate(spec.template)} · ${DIFFICULTY[spec.difficulty]}」 조건에 맞는 서로 다른 문제를 ${spec.count}개 만들 수 없습니다. 자릿수·난이도·문제 수를 조정해 주세요.`};
      problems.push(...made);
@@ -1658,9 +1690,16 @@ global.QRCode = requireLocal('index');
  function buildSheets(problems,opts){
    const {withAnswers=false,qrUrl='',specs=[],layout={cols:2,rows:10}}=opts;
    const cols=layout.cols,rows=layout.rows,perPage=cols*rows,total=Math.max(1,Math.ceil(problems.length/perPage));
-   const opNames={p:'덧셈',m:'뺄셈',x:'곱셈',d:'나눗셈'};
-   const usedOps=new Set(specs.flatMap(s=>Array.from(s.template).filter(c=>opNames[c])));
-   const summary=Object.keys(opNames).filter(c=>usedOps.has(c)).map(c=>opNames[c]).join(' · ')+' 연습';
+   // Derive each printed page's heading from the types actually printed on that page.
+   function pageSubtitle(subset){
+     const counts=new Map();
+     for(const p of subset){if(Number.isInteger(p.specIndex))counts.set(p.specIndex,(counts.get(p.specIndex)||0)+1);}
+     if(!counts.size)return '';
+     return [...counts].sort((a,b)=>a[0]-b[0]).map(([i,count])=>{
+       const spec=specs[i];
+       return `${labelTemplate(spec.template)} (${DIFFICULTY[spec.difficulty]} · ${count}문제)`;
+     });
+   }
    const pages=[];
    for(let page=0;page<total;page++){
      const offset=page*perPage,subset=problems.slice(offset,offset+perPage);
@@ -1672,7 +1711,9 @@ global.QRCode = requireLocal('index');
      paper.style.setProperty('--expression-mobile',cols>=4?'43px':cols===3?'59px':cols===2?'86px':'110px');
      paper.style.setProperty('--expression-print',cols>=4?'17mm':cols===3?'24mm':cols===2?'35mm':'50mm');
      paper.setAttribute('aria-label',`${page+1}번째 A4 ${withAnswers?'정답지':'문제지'}`);
-     paper.innerHTML=`<div class="paper-header"><h3>문제가 많은 게 문제${withAnswers?' · 정답지':''}</h3><div class="paper-details"><div class="paper-template"><span>${escapeHtml(specs.length?summary:'연산 연습')}</span></div><div class="student-name">이름: <span class="name-line"></span></div><div class="qr-box" ${withAnswers||!qrUrl?'hidden':''}></div></div></div><div class="question-grid"></div><div class="paper-foot">${page+1} / ${total}</div>`;
+     const pageLabels=pageSubtitle(subset);
+     const subtitle=pageLabels.length?pageLabels.map(x=>`<span class="paper-subtitle-item">${escapeHtml(x)}</span>`).join('<span class="paper-subtitle-separator"> / </span>'):'';
+     paper.innerHTML=`<div class="paper-header"><h3>문제가 많은 게 문제${withAnswers?' · 정답지':''}</h3><p class="paper-subtitle">${subtitle}</p><div class="paper-details"><div class="student-name">이름: <span class="name-line"></span></div><div class="qr-box" ${withAnswers||!qrUrl?'hidden':''}></div></div></div><div class="question-grid"></div><div class="paper-foot">${page+1} / ${total}</div>`;
      const grid=paper.querySelector('.question-grid');
      let useColumnGrouping=false;
      if(opts.order==='group'&&cols>1&&rows>1&&subset.length){
@@ -1688,7 +1729,8 @@ global.QRCode = requireLocal('index');
      subset.forEach((p,j)=>{
        const line=document.createElement('div');line.className='question';
        const final=withAnswers?`<strong class="answer-value">${p.answer.toLocaleString('ko-KR')}</strong>`:'<span class="answer-line" aria-label="정답칸"></span>';
-       line.innerHTML=`<span class="question-number">${offset+j+1}.</span><span class="question-expression">${escapeHtml(p.expression)} =</span>${final}`;
+       line.innerHTML=`<span class="question-number">${offset+j+1}.</span><div class="question-body"><span class="question-expression">${escapeHtml(p.expression)} =</span>${final}</div>`;
+       if(p.expression.length>(cols>=4?19:cols===3?26:cols===2?36:48))line.classList.add('long-question');
        if(useColumnGrouping){line.style.gridColumn=String(Math.floor(j/rows)+1);line.style.gridRow=String(j%rows+1);}
        grid.appendChild(line);
      });
@@ -1766,7 +1808,13 @@ global.QRCode = requireLocal('index');
    const cfg={withAnswers:false,qrUrl,specs:worksheet.specs,layout,order:worksheet.order};
    $('sheets').replaceChildren(...TMM.buildSheets(worksheet.problems,cfg));
    $('printMount').replaceChildren(...TMM.buildSheets(worksheet.problems,cfg));
-   $('openAnswers').disabled=false;$('printProblems').disabled=false;
+   const overflow=[...$('sheets').querySelectorAll('.question')].some(cell=>{
+     const content=cell.querySelector('.question-body');
+     return content && content.getBoundingClientRect().height>cell.getBoundingClientRect().height+2;
+   });
+   $('openAnswers').disabled=overflow;$('printProblems').disabled=overflow;
+   if(overflow)show(`계산식이 길어 현재 ${layout.cols}열 × ${layout.rows}행 배치에서는 문제가 겹칠 수 있습니다. 열 수나 행 수를 줄여 주세요.`);
+   return !overflow;
  }
  function generate(){
    if(!validLayout(getLayout())){show('한 장 배치는 열 1~4, 행 1~15 사이의 정수로 설정해 주세요.');return;}
@@ -1777,8 +1825,8 @@ global.QRCode = requireLocal('index');
    const result=TMM.generateBundle(copy,seed,order);
    if(result.error){show(result.error);return;}
    worksheet={specs:copy,seed,order,problems:result.problems};
-   renderProblems();
-   show(location.protocol==='file:'?'문제지를 생성했습니다. QR은 GitHub Pages에 올린 뒤 스마트폰에서 사용할 수 있습니다.':'');
+   const fits=renderProblems();
+   if(fits)show(location.protocol==='file:'?'문제지를 생성했습니다. QR은 GitHub Pages에 올린 뒤 스마트폰에서 사용할 수 있습니다.':'');
  }
  document.querySelectorAll('[data-digit]').forEach(b=>b.addEventListener('click',()=>{formula+=b.dataset.digit;show('');refreshFormula();}));
  document.querySelectorAll('[data-op]').forEach(b=>b.addEventListener('click',()=>{formula+=b.dataset.op;show('');refreshFormula();}));
@@ -1799,7 +1847,7 @@ global.QRCode = requireLocal('index');
    $(id).addEventListener('change',()=>{
      syncPageCount();updateLayout();
      if(!validLayout(getLayout())){show('열 1~4, 행 1~15 사이로 지정해 주세요.');return;}
-     if(worksheet){renderProblems();show('행·열 배치를 미리보기에 반영했습니다.');}
+     if(worksheet){if(renderProblems())show('행·열 배치를 미리보기에 반영했습니다.');}
    });
  });
  $('printProblems').addEventListener('click',()=>{if(worksheet)window.print();});
