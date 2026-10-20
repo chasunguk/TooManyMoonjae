@@ -1,478 +1,72 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#ffffff">
-<meta name="description" content="문제가 많은 게 문제(TMM) — 계산기처럼 원하는 연산식을 조립하고 초등 수학 문제지와 정답지를 만드는 무료 데모입니다.">
-<title>문제가 많은 게 문제 | TMM</title>
-<link rel="icon" type="image/svg+xml" href="./favicon.svg">
-<style>
-:root{color-scheme:light}
-*,*::before,*::after{box-sizing:border-box}
-[hidden]{display:none!important}
-html{scroll-behavior:smooth}
-body{margin:0;background:#fafafa;color:#1c1c1c;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;font-size:13px;line-height:1.55}
-button,input,select{font:inherit;color:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.36;cursor:not-allowed}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #444;outline-offset:2px}
-h1,h2,h3,p{margin-top:0}
-.page{width:min(790px,100%);min-height:100vh;margin:auto;background:white;padding:30px 32px 70px}
-.site-header{display:grid;grid-template-columns:1fr 3fr 1fr;align-items:center;margin-bottom:27px}
-.menu-toggle{border:0;background:transparent;text-align:left;padding:8px 0;font-size:12px;width:max-content;color:#4b4b4b}
-.menu-toggle:hover{text-decoration:underline}
-.brand{text-align:center;font-size:25px;font-weight:700;letter-spacing:-1px;white-space:nowrap;line-height:1.35}
-.brand small{display:block;font-size:10px;font-weight:400;letter-spacing:.8px;color:#999;margin-top:3px}
-.top-controls{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;max-width:490px;margin:0 auto 22px}
-.panel-anchor{position:relative;min-width:0}
-.panel-toggle{display:block;width:100%;height:42px;background:white;border:1.5px solid #333;border-radius:3px;font-size:13px;font-weight:600;transition:background .15s}
-.panel-toggle:hover,.panel-toggle[aria-expanded="true"]{background:#f3f3f3}
-.panel-toggle[aria-expanded="true"]{border-bottom-color:#666}
-.panel-toggle .chev{display:inline-block;margin-left:12px;color:#777;font-weight:400;font-size:11px}
-.panel-popover{position:absolute;z-index:4;top:calc(100% + 9px);left:0;width:360px;max-width:min(360px,calc(100vw - 34px));max-height:390px;overflow:auto;background:#fff;border:1.5px solid #444;box-shadow:4px 7px 0 #ececec;padding:16px;border-radius:3px}
-.panel-anchor:last-child .panel-popover{left:auto;right:0}
-.view-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid #dedede}
-h2{font-size:15px;margin:0;font-weight:700}
-h3{font-size:13px;margin-bottom:9px}
-.subtle{font-size:11px;color:#777;font-weight:400}
-.expression{min-height:58px;border:1px solid #c6c6c6;border-radius:2px;display:flex;align-items:center;overflow-wrap:anywhere;padding:11px;font-size:12px}
-.expression.is-empty{color:#999}
-.tokens{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.token{border-bottom:1px solid #666;white-space:nowrap;padding:1px 2px}
-.token.op{border:0;padding:0 1px;font-weight:600}
-.cursor{width:1px;height:15px;background:#666}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 14px}
-.toolbar-note{font-size:10px;color:#888}
-.mini-actions{display:flex;gap:9px;flex-shrink:0}
-.mini-button,.text-link{border:0;background:none;font-size:11px;color:#555;padding:0}
-.mini-button:hover{text-decoration:underline}
-.key-label{font-size:11px;color:#666;margin:12px 0 7px}
-.key-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.key{background:#fff;border:1px solid #c1c1c1;padding:9px 2px;border-radius:2px;min-height:38px;font-size:11px;word-break:keep-all}
-.key.operator{font-size:17px;font-weight:500}
-.key:hover:not(:disabled){background:#f4f4f4;border-color:#333}
-.actions{display:flex;gap:7px;margin-top:15px;flex-wrap:wrap}
-.action{border:1px solid #777;background:#fff;padding:9px 10px;font-size:11px;border-radius:2px;flex:1;min-width:max-content}
-.action.primary{color:#fff;background:#2a2a2a;border-color:#2a2a2a;font-weight:600}
-.action:hover:not(:disabled){opacity:.82}
-.message{display:none;margin:10px 0 0;padding:9px;border:1px solid #ddd;background:#fafafa;color:#444;line-height:1.7;font-size:11px}
-.message.visible{display:block}
-.field{margin-bottom:12px}
-.field-label{display:block;font-size:11px;color:#777;margin-bottom:6px}
-.input-row{display:flex;align-items:center;gap:8px}
-.input-row input,.input-row select{border:1px solid #aaa;background:#fff;padding:8px 9px;border-radius:2px;font-size:12px;height:38px}
-.input-row input{width:76px}
-.field-help{color:#777;font-size:11px;margin-top:6px}
-.bank{border-top:1px solid #dedede;margin-top:19px;padding-top:14px}
-.bank-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.bank-empty{font-size:11px;color:#999}
-.bank-list{list-style:none;padding:0;margin:4px 0}
-.bank-item{display:flex;justify-content:space-between;gap:9px;padding:8px 0;border-bottom:1px solid #eee}
-.bank-formula{font-size:11px;overflow-wrap:anywhere}
-.bank-count{font-size:10px;color:#999}
-.bank-footer{display:flex;justify-content:space-between;font-size:11px;margin-top:10px}
-.remove{border:0;background:none;font-size:17px}
-.preview-frame{border:1.5px solid #333;min-height:645px;padding:17px;background:#fff;border-radius:2px}
-.preview-head{display:flex;justify-content:space-between;align-items:start;gap:14px;min-height:61px}
-.preview-head-title{border:1px solid #555;padding:8px 14px;font-size:12px;font-weight:600;background:#fff;min-width:162px;text-align:center;border-radius:2px}
-.preview-head-title small{display:block;font-weight:400;color:#888;font-size:10px}
-.preview-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;flex-wrap:wrap}
-.print-button{border:1px solid #bbb;padding:8px 10px;background:#fff;font-size:11px;border-radius:2px}
-.print-button:hover:not(:disabled){border-color:#333;background:#f6f6f6}
-.sheet{min-height:525px;display:flex;flex-direction:column;padding:8px 15px 20px}
-.sheet-header{margin:0 0 28px;padding-bottom:13px;border-bottom:1px solid #d7d7d7}
-.sheet-header h3{font-size:17px;text-align:center;margin-bottom:14px;letter-spacing:-.3px}
-.sheet-info{display:flex;justify-content:space-between;gap:8px;color:#555;font-size:11px}
-.sheet-placeholder{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;min-height:380px}
-.sheet-placeholder strong{font-size:23px;font-weight:500;letter-spacing:-.8px}
-.sheet-placeholder p{font-size:11px;color:#9b9b9b;margin:10px 0 0}
-.sheet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:23px 22px;align-content:start}
-.sheet-grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 12px}
-.problem{font-size:12px;line-height:1.8;overflow-wrap:anywhere}
-.problem-index{margin-right:5px}
-.backdrop{position:fixed;inset:0;background:#0004;z-index:8}
-.drawer{position:fixed;inset:0 auto 0 0;z-index:9;background:white;border-right:1px solid #aaa;width:min(295px,88vw);padding:27px 21px;box-shadow:5px 0 20px #0001}
-.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.drawer-header strong{font-size:15px}
-.drawer-close{background:none;border:0;font-size:24px}
-.drawer nav{display:flex;flex-direction:column}
-.drawer nav button{text-align:left;background:white;border:0;border-bottom:1px solid #eee;padding:16px 2px;font-size:12px}
-.drawer nav button.active{font-weight:700}
-.drawer nav button span{font-size:10px;color:#999;display:block}
-.drawer-note{color:#999;font-size:11px;margin-top:20px}
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#292929;color:white;padding:10px 15px;z-index:20;font-size:12px;max-width:calc(100% - 30px);opacity:0;transition:opacity .2s;pointer-events:none}
-.toast.show{opacity:1}
-#printArea{display:none}
-@media(max-width:620px){
-body{background:#fff}
-.page{padding:22px 13px 50px}
-.site-header{grid-template-columns:1fr 3fr 1fr;margin-bottom:24px}
-.brand{font-size:18px;white-space:normal}
-.brand small{font-size:8px}
-.menu-toggle{font-size:11px}
-.top-controls{gap:12px;margin-bottom:15px;max-width:none}
-.panel-toggle{height:41px;font-size:12px}
-.panel-popover{max-width:calc(100vw - 26px);width:345px}
-.preview-frame{padding:11px;min-height:650px}
-.preview-head{gap:7px;flex-wrap:wrap;min-height:50px;margin-bottom:6px}
-.preview-head-title{min-width:140px;padding:8px;font-size:11px}
-.preview-actions{gap:5px}
-.print-button{font-size:10px;padding:7px}
-.sheet{padding:12px 3px;min-height:480px}
-.sheet-info{font-size:9px}
-.sheet-header h3{font-size:15px}
-.sheet-placeholder{min-height:300px}
-.sheet-grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
-.problem{font-size:11px}
-}
-@media(max-width:390px){.preview-actions{width:100%;justify-content:flex-start}.panel-anchor:nth-child(2) .panel-popover{right:0}.preview-frame{min-height:660px}}
-@media print{
-@page{size:A4 portrait;margin:15mm 14mm}
-html,body{background:white!important;color:#111;font-family:"Malgun Gothic",sans-serif}
-.page,.drawer,.backdrop,.toast{display:none!important}
-#printArea{display:block!important}
-.print-head{text-align:center;border-bottom:1px solid #111;padding-bottom:12px;margin-bottom:20px}
-.print-head h1{font-size:18pt;line-height:1.5;margin:0 0 13px;font-weight:500}
-.print-meta{font-size:10pt;display:flex;justify-content:space-between;text-align:left;gap:12px}
-.print-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 26px}
-.print-grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 12px}
-.print-problem{font-size:11pt;line-height:1.9;break-inside:avoid;overflow-wrap:anywhere;min-height:36px}
-.print-number{font-weight:bold;margin-right:8px}
-.print-answer{font-weight:bold}
-.print-footer{margin-top:22px;text-align:center;font-size:8pt;color:#777}
-}
-</style>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="description" content="TMM · 문제가 많은 게 문제 — 계산기처럼 사칙연산 문제를 만들어 A4로 인쇄하는 무료 문제지 생성기">
+ <title>문제가 많은 게 문제 | TMM</title>
+ <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<main class="page">
-  <header class="site-header">
-    <button type="button" id="openMenu" class="menu-toggle" aria-expanded="false" aria-controls="sidebar">☰ 메뉴</button>
-    <div class="brand">문제가 많은 게 문제<small>TOO MANY MOONJAE · TMM</small></div>
-    <div></div>
+ <main class="site">
+  <header class="header">
+   <button id="menuOpen" class="menu-trigger" type="button" aria-label="문제 유형 메뉴 열기"><span class="hamburger">☰</span><span class="menu-label">메뉴</span></button>
+   <h1><a class="brand-text" href="./index.html">문제가 많은 게 문제</a></h1>
+   <span class="header-note">TMM · DEMO</span>
   </header>
-  <div class="top-controls" aria-label="문제지 도구">
-    <div class="panel-anchor">
-      <button class="panel-toggle" type="button" data-view="builder" aria-controls="builderPanel" aria-expanded="false">나만의 문제 <span class="chev">▾</span></button>
-      <section class="panel-popover" id="builderPanel" data-panel="builder" hidden aria-labelledby="builder-title">
-        <div class="view-header"><h2 id="builder-title">나만의 문제</h2><span class="subtle">계산식 만들기</span></div>
-        <div class="expression is-empty" id="expression" aria-live="polite">숫자 버튼을 눌러 계산식을 만드세요.</div>
-        <div class="toolbar"><span id="formula-hint" class="toolbar-note">숫자부터 시작해 주세요.</span><div class="mini-actions"><button type="button" class="mini-button" id="backspace">지우기</button><button type="button" class="mini-button" id="clear">초기화</button></div></div>
-        <div class="key-label">자릿수</div>
-        <div class="key-grid" id="numberKeys"><button class="key" type="button" data-digits="1">한 자리 수</button><button class="key" type="button" data-digits="2">두 자리 수</button><button class="key" type="button" data-digits="3">세 자리 수</button><button class="key" type="button" data-digits="4">네 자리 수</button></div>
-        <div class="key-label">연산</div>
-        <div class="key-grid" id="opKeys"><button class="key operator" type="button" data-op="+">+</button><button class="key operator" type="button" data-op="−">−</button><button class="key operator" type="button" data-op="×">×</button><button class="key operator" type="button" data-op="÷">÷</button></div>
-        <div class="actions"><button type="button" class="action primary" id="generate">문제 생성</button><button type="button" class="action" id="addToBank">이 유형 담기</button></div>
-        <div class="actions"><button type="button" class="action" id="builderToPreview">미리보기로 이동</button></div>
-        <div class="message" id="builderMessage" role="status" aria-live="polite"></div>
-      </section>
+  <section class="builder" aria-label="문제 생성용 계산기">
+   <div class="builder-left">
+    <div id="expression" class="expression" aria-live="polite">세 자리 수 + 두 자리 수</div>
+    <div class="key-row numbers" aria-label="자릿수 버튼">
+     <button class="key" data-digit="1" type="button">한 자리 수</button>
+     <button class="key" data-digit="2" type="button">두 자리 수</button>
+     <button class="key" data-digit="3" type="button">세 자리 수</button>
+     <button class="key" data-digit="4" type="button">네 자리 수</button>
     </div>
-    <div class="panel-anchor">
-      <button class="panel-toggle" type="button" data-view="settings" aria-controls="settingsPanel" aria-expanded="false">문제지 설정 <span class="chev">▾</span></button>
-      <section class="panel-popover" id="settingsPanel" data-panel="settings" hidden aria-labelledby="settings-title">
-        <div class="view-header"><h2 id="settings-title">문제지 설정</h2><span class="subtle">인쇄 및 문제 수량</span></div>
-        <div class="field"><label class="field-label" for="countInput">생성할 문제 개수</label><div class="input-row"><input type="number" id="countInput" min="1" max="300" step="1" value="10"><span class="subtle">개 (1~300)</span></div></div>
-        <div class="field"><label class="field-label" for="columnCount">문제지 배치</label><div class="input-row"><select id="columnCount"><option value="2">2열</option><option value="3">3열</option></select></div></div>
-        <div class="actions"><button type="button" class="action primary" id="generateFromSettings">문제 생성</button><button type="button" class="action" id="settingsToBuilder">계산식 만들기</button></div>
-        <div class="message" id="settingsMessage" role="status" aria-live="polite"></div>
-        <div class="bank" aria-labelledby="bank-title">
-          <div class="bank-head"><h3 id="bank-title">담아둔 문제 유형</h3><span class="subtle" id="bankCounter">0문제</span></div>
-          <div class="bank-empty" id="bankEmpty">여러 유형을 섞으려면 '나만의 문제'에서 유형을 담아 주세요.</div>
-          <ul class="bank-list" id="bankList"></ul>
-          <div id="bankFooter" hidden><div class="bank-footer"><span>총 문제 수</span><strong id="bankTotal">0문제</strong></div><div class="actions"><button type="button" class="action" id="generateBank">담아둔 유형 전체 생성</button></div></div>
-        </div>
-      </section>
+    <div class="key-row operators" aria-label="연산 기호 버튼">
+     <button class="key operator" data-op="p" type="button">+</button>
+     <button class="key operator" data-op="m" type="button">−</button>
+     <button class="key operator" data-op="x" type="button">×</button>
+     <button class="key operator" data-op="d" type="button">÷</button>
     </div>
-  </div>
-  <section class="preview-frame" id="previewSection" aria-labelledby="preview-title">
-    <div class="preview-head">
-      <div class="preview-head-title" id="preview-title">문제지 미리보기 <small id="previewCount">항상 표시</small></div>
-      <div class="preview-actions"><button type="button" class="print-button" id="printProblems" disabled>문제지 인쇄 / PDF</button><button type="button" class="print-button" id="printAnswers" disabled>정답지 인쇄 / PDF</button></div>
+    <div class="key-row actions">
+     <button id="generate" class="key primary" type="button">문제 생성</button>
+     <button id="backspace" class="key" type="button">뒤로</button>
+     <button id="clear" class="key" type="button">전체 지우기</button>
     </div>
-    <div class="sheet">
-      <div class="sheet-header"><h3>연산 문제지</h3><div class="sheet-info"><span id="sheetDetails">기본 사칙연산</span><span>이름: __________________</span></div></div>
-      <div id="sheetPlaceholder" class="sheet-placeholder"><strong>문제들</strong><p>상단의 '나만의 문제'에서 문제를 만들어 보세요.</p></div>
-      <div id="sheetGrid" class="sheet-grid" hidden></div>
-    </div>
-    <div class="message" id="outputMessage" aria-live="polite" role="status"></div>
+   </div>
+   <div class="builder-right">
+    <label for="count">문제 수</label>
+    <input id="count" type="number" min="1" max="200" step="1" value="20" inputmode="numeric">
+    <p class="caption">한 장에 2열 × 10문제<br>21문제부터 다음 장에 배치됩니다.</p>
+   </div>
   </section>
-</main>
-<div id="backdrop" class="backdrop" hidden></div>
-<aside class="drawer" id="sidebar" hidden aria-label="연산 유형 메뉴">
-  <div class="drawer-header"><strong>문제 유형</strong><button type="button" class="drawer-close" id="closeMenu" aria-label="메뉴 닫기">×</button></div>
-  <nav aria-label="문제 유형">
-    <button type="button" class="active" data-mode="basic">기본 사칙연산</button>
-    <button type="button" data-mode="advanced">응용 사칙연산 <span>추후 개발 예정</span></button>
-    <button type="button" data-mode="decimal">소수의 사칙연산 <span>추후 개발 예정</span></button>
-    <button type="button" data-mode="fraction">분수의 사칙연산 <span>추후 개발 예정</span></button>
+  <div id="status" class="alert" role="status" aria-live="polite" hidden></div>
+  <section class="preview" aria-labelledby="previewTitle">
+   <div class="preview-heading">
+    <h2 id="previewTitle">문제지 미리보기</h2>
+    <div class="preview-tools">
+     <button class="tool" type="button" id="openAnswers">정답지 열기 ↗</button>
+     <button class="tool" type="button" id="printProblems">문제지 인쇄 / PDF</button>
+    </div>
+   </div>
+   <div id="sheets" class="papers"></div>
+  </section>
+ </main>
+ <div id="drawerBg" class="drawer-bg" hidden></div>
+ <aside id="drawer" class="drawer" hidden aria-label="문제 유형 메뉴">
+  <div class="drawer-top"><strong>문제 유형</strong><button id="menuClose" type="button" aria-label="메뉴 닫기">×</button></div>
+  <nav>
+   <button type="button" data-menu="basic">기본 사칙연산</button>
+   <button type="button" data-menu="advanced">응용 사칙연산<small>추후 개발 예정</small></button>
+   <button type="button" data-menu="decimal">소수의 사칙연산<small>추후 개발 예정</small></button>
+   <button type="button" data-menu="fraction">분수의 사칙연산<small>추후 개발 예정</small></button>
   </nav>
-  <p class="drawer-note">현재 데모에서는 기본 사칙연산만 이용할 수 있습니다.</p>
-</aside>
-<div id="printArea" aria-hidden="true"></div>
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script>
-(() => {
-  const $ = (id) => document.getElementById(id);
-  const labels = ['','한 자리 수','두 자리 수','세 자리 수','네 자리 수'];
-  const LIMIT = 999999999999999n;
-  let tokens = [];
-  let bank = [];
-  let problems = [];
-  let chosenCount = 10;
-  let busy = false;
-  let toastHandle;
-
-  const wait = () => new Promise(resolve => setTimeout(resolve,0));
-  const isNumber = x => x && x.type === 'number';
-  const lastIsNumber = () => isNumber(tokens[tokens.length-1]);
-  const formulaString = seq => seq.map(t => t.type === 'number' ? labels[t.digits] : t.symbol).join(' ');
-  const formulaValid = () => tokens.length >= 3 && lastIsNumber();
-  const digitsMin = d => d === 1 ? 1n : 10n ** BigInt(d-1);
-  const digitsMax = d => 10n ** BigInt(d) - 1n;
-  const randInt = (min,max) => Math.floor(Math.random() * (max-min+1)) + min;
-  const randBigInt = (min,max) => {
-    if (min > max) return null;
-    const range = max-min;
-    if (range <= BigInt(Number.MAX_SAFE_INTEGER)) return min+BigInt(Math.floor(Math.random()*(Number(range)+1)));
-    const p = BigInt(randInt(0,999999));
-    return min + (range * p / 1000000n);
-  };
-
-  function showToast(message){const t=$('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastHandle);toastHandle=setTimeout(()=>t.classList.remove('show'),2500)}
-  function showMessage(id,msg,success=false){const el=$(id);el.textContent=msg;el.className='message visible'+(success?' success':'')}
-  function hideMessage(id){$(id).className='message';$(id).textContent=''}
-  function renderBuilder(){
-    const el=$('expression');
-    if (!tokens.length){el.className='expression is-empty';el.textContent='여기에 계산식이 만들어져요!'}
-    else {el.className='expression';el.innerHTML='';const wrap=document.createElement('div');wrap.className='tokens';tokens.forEach(t=>{const span=document.createElement('span');span.className='token '+(t.type==='op'?'op':'');span.textContent=t.type==='number'?labels[t.digits]:t.symbol;wrap.appendChild(span)});const cursor=document.createElement('span');cursor.className='cursor';wrap.appendChild(cursor);el.appendChild(wrap)}
-    $('formula-hint').textContent=tokens.length===0?'숫자부터 시작해 주세요':lastIsNumber()?'연산자를 더 넣거나 문제를 생성할 수 있습니다.':'다음 숫자를 선택해 주세요';
-    document.querySelectorAll('[data-digits]').forEach(b=>b.disabled=lastIsNumber()||busy);
-    document.querySelectorAll('[data-op]').forEach(b=>b.disabled=!lastIsNumber()||busy);
-    $('backspace').disabled=tokens.length===0||busy;
-    $('clear').disabled=tokens.length===0||busy;
-    $('generate').disabled=!formulaValid()||busy;
-    $('addToBank').disabled=!formulaValid()||busy;
-    $('generateBank').disabled=!bank.length||busy;
-    document.querySelectorAll('[data-preset]').forEach(b=>b.disabled=busy);
-    $('generate').textContent=busy?'만드는 중…':'문제 생성';
-  }
-  function addToken(t){tokens.push(t);hideMessage('builderMessage');renderBuilder()}
-  document.querySelectorAll('[data-digits]').forEach(btn=>btn.addEventListener('click',()=>{if(!lastIsNumber()&&!busy)addToken({type:'number',digits:Number(btn.dataset.digits)})}));
-  document.querySelectorAll('[data-op]').forEach(btn=>btn.addEventListener('click',()=>{if(lastIsNumber()&&!busy)addToken({type:'op',symbol:btn.dataset.op})}));
-  $('backspace').addEventListener('click',()=>{tokens.pop();renderBuilder();hideMessage('builderMessage')});
-  $('clear').addEventListener('click',()=>{tokens=[];renderBuilder();hideMessage('builderMessage')});
-  document.querySelectorAll('[data-mode]').forEach(btn=>btn.addEventListener('click',()=>{
-    if(btn.dataset.mode==='basic'){closeDrawer();openView('builder')} else {showToast('추후 개발 예정입니다.')}
-  }));
-
-  function parseTerms(seq){
-    const terms=[];
-    let part=[seq[0]];
-    let sign='+';
-    for(let i=1;i<seq.length;i+=2){const op=seq[i].symbol;const n=seq[i+1];if(op==='+'||op==='−'){terms.push({sign,part});sign=op;part=[n]}else{part.push(op,n)}}
-    terms.push({sign,part});return terms;
-  }
-  function minTerm(term){return term.part.length===1?digitsMin(term.part[0].digits):0n}
-  function futureMinimum(terms,index){let total=0n;for(let i=index+1;i<terms.length;i++){if(terms[i].sign==='+')break;total+=minTerm(terms[i])}return total}
-
-  function divisorFor(number,digits){
-    const low=digitsMin(digits), high=digitsMax(digits);
-    if(number===0n)return randBigInt(low,high);
-    if(number<low)return null;
-    for(let i=0;i<28;i++){const d=randBigInt(low,high);if(d>0n&&number%d===0n)return d}
-    const matches=[];
-    for(let d=Number(low);d<=Number(high);d++)if(number%BigInt(d)===0n)matches.push(BigInt(d));
-    return matches.length?matches[randInt(0,matches.length-1)]:null;
-  }
-  function buildTerm(part,minAllowed,maxAllowed){
-    if(minAllowed>maxAllowed)return null;
-    const d=part[0].digits;
-    if(part.length===1){const lo=digitsMin(d)>minAllowed?digitsMin(d):minAllowed;const hi=digitsMax(d)<maxAllowed?digitsMax(d):maxAllowed;if(lo>hi)return null;const n=randBigInt(lo,hi);return {value:n,nums:[n]}}
-    for(let attempt=0;attempt<105;attempt++){
-      const nums=[],first=randBigInt(digitsMin(d),digitsMax(d));let value=first;nums.push(first);let valid=true;
-      for(let i=1;i<part.length;i+=2){
-        const op=part[i],nextDigits=part[i+1].digits;
-        let n;
-        if(op==='÷')n=divisorFor(value,nextDigits);
-        else n=randBigInt(digitsMin(nextDigits),digitsMax(nextDigits));
-        if(n===null){valid=false;break}
-        if(op==='×')value*=n;
-        else if(op==='÷'){if(n===0n||value%n!==0n){valid=false;break}value/=n}
-        if(value>LIMIT){valid=false;break}
-        nums.push(n);
-      }
-      if(valid&&value>=minAllowed&&value<=maxAllowed)return {value,nums};
-    }
-    return null;
-  }
-  function makeOne(seq){
-    const terms=parseTerms(seq);
-    for(let attempt=0;attempt<85;attempt++){
-      let sum=0n,nums=[],ok=true;
-      for(let index=0;index<terms.length;index++){
-        const t=terms[index],future=futureMinimum(terms,index);
-        let min=0n,max=LIMIT;
-        if(t.sign==='−'){max=sum-future;if(max<0n){ok=false;break}}
-        else {min=future>sum?future-sum:0n}
-        const term=buildTerm(t.part,min,max);
-        if(!term){ok=false;break}
-        sum=t.sign==='−'?sum-term.value:sum+term.value;
-        if(sum<0n||sum>LIMIT){ok=false;break}
-        nums.push(...term.nums);
-      }
-      if(!ok)continue;
-      let ni=0;
-      const expression=seq.map(t=>t.type==='number'?String(nums[ni++]):t.symbol).join(' ');
-      return {expression,answer:sum.toString()};
-    }
-    return null;
-  }
-  async function generateFrom(recipes){
-    if(busy)return;
-    busy=true;renderBuilder();hideMessage('outputMessage');hideMessage('builderMessage');
-    try {
-      let result=[],seen=new Set(),shortages=[];
-      for(const recipe of recipes){
-        const local=[];let attempts=0,consecutiveFailed=0;const maxAttempts=Math.max(150,recipe.count*45);
-        while(local.length<recipe.count&&attempts<maxAttempts){
-          attempts++;
-          const sample=makeOne(recipe.tokens);
-          if(!sample){consecutiveFailed++;if(consecutiveFailed>=3)break;continue}
-          consecutiveFailed=0;
-          if(seen.has(sample.expression))continue;
-          seen.add(sample.expression);local.push(sample);
-          if(local.length%12===0)await wait();
-        }
-        result.push(...local);
-        if(local.length<recipe.count)shortages.push(`${formulaString(recipe.tokens)}: ${recipe.count}문제 중 ${local.length}문제`);
-      }
-      problems=result;renderPreview();if(result.length)closePanels();
-      if(shortages.length){const msg=result.length?`조건에 맞는 고유 문제를 모두 만들지 못했습니다. 생성된 ${result.length}문제만 표시합니다. ${shortages.join(' / ')}. 자릿수나 연산을 바꿔보세요.`:'현재 계산식으로는 조건에 맞는 문제를 생성하지 못했습니다. 음수 또는 나머지가 없는 정수 계산을 만들 수 있는지 자릿수와 연산을 확인해 주세요.';showMessage('outputMessage',msg);if(!result.length)showMessage('builderMessage',msg)}
-      else showMessage('outputMessage',`완성! ${result.length}문제를 만들었습니다. 문제지와 정답지를 각각 인쇄하거나 PDF로 저장할 수 있어요.`,true);
-      if(result.length)requestAnimationFrame(()=>$('previewSection').scrollIntoView({behavior:'smooth',block:'nearest'}));
-    } catch(e) {showMessage('outputMessage','문제 생성 중 오류가 발생했습니다. 계산식을 다시 확인해 주세요.');console.error(e)}
-    finally {busy=false;renderBuilder()}
-  }
-  function renderBank(){
-    $('bankList').innerHTML='';
-    const sum=bank.reduce((a,b)=>a+b.count,0);
-    $('bankCounter').textContent=`${sum}문제`;
-    $('bankTotal').textContent=`${sum}문제`;
-    $('bankEmpty').hidden=bank.length>0;
-    $('bankFooter').hidden=bank.length===0;
-    bank.forEach((recipe,i)=>{
-      const li=document.createElement('li');li.className='bank-item';
-      const info=document.createElement('div');
-      const f=document.createElement('div');f.className='bank-formula';f.textContent=formulaString(recipe.tokens);
-      const c=document.createElement('div');c.className='bank-count';c.textContent=`${recipe.count}문제`;
-      info.append(f,c);
-      const remove=document.createElement('button');remove.type='button';remove.className='remove';remove.setAttribute('aria-label','이 유형 삭제');remove.textContent='×';remove.onclick=()=>{bank.splice(i,1);renderBank();renderBuilder()};
-      li.append(info,remove);$('bankList').append(li);
-    });renderBuilder();
-  }
-  function renderPreview(){
-    const grid=$('sheetGrid');grid.innerHTML='';
-    const cols=$('columnCount').value;
-    grid.className='sheet-grid'+(cols==='3'?' cols-3':'');
-    $('sheetPlaceholder').hidden=problems.length>0;
-    grid.hidden=problems.length===0;
-    $('previewCount').textContent=problems.length?`· ${problems.length}문제`:'';
-    $('sheetDetails').textContent=`기본 사칙연산 · ${problems.length}문제`;
-    $('printProblems').disabled=problems.length===0;
-    $('printAnswers').disabled=problems.length===0;
-    problems.forEach((p,i)=>{
-      const div=document.createElement('div');div.className='problem';
-      const num=document.createElement('span');num.className='problem-index';num.textContent=`${i+1}.`;
-      const expr=document.createElement('span');expr.textContent=` ${p.expression} = ______`;
-      div.append(num,expr);grid.append(div);
-    });
-  }
-  function printSheet(showAnswers){
-    if(!problems.length)return;
-    const root=$('printArea');root.innerHTML='';
-    const head=document.createElement('div');head.className='print-head';
-    const title=document.createElement('h1');title.textContent=showAnswers?'TMM · 오늘의 연산 연습 · 정답지':'TMM · 오늘의 연산 연습';
-    const meta=document.createElement('div');meta.className='print-meta';
-    const left=document.createElement('span');left.textContent=`기본 사칙연산 · 총 ${problems.length}문제`;
-    const right=document.createElement('span');right.textContent=showAnswers?'정답 확인용':'이름: __________________';
-    meta.append(left,right);head.append(title,meta);root.append(head);
-    const grid=document.createElement('div');grid.className='print-grid'+($('columnCount').value==='3'?' cols-3':'');
-    problems.forEach((p,i)=>{
-      const div=document.createElement('div');div.className='print-problem';
-      const num=document.createElement('span');num.className='print-number';num.textContent=`${i+1}.`;
-      const val=document.createElement('span');val.textContent=` ${p.expression} = `;
-      const answer=document.createElement('span');answer.className=showAnswers?'print-answer':'';answer.textContent=showAnswers?p.answer:'________';
-      div.append(num,val,answer);grid.append(div);
-    });root.append(grid);
-    const footer=document.createElement('div');footer.className='print-footer';footer.textContent='TMM · Too Many Moonjae · 문제가 많은 게 문제';root.append(footer);
-    window.print();
-  }
-
-  $('addToBank').onclick=()=>{
-    if(!formulaValid())return;
-    bank.push({tokens:tokens.map(t=>({...t})),count:chosenCount});
-    renderBank();showToast(`${chosenCount}문제 유형을 보관함에 담았어요!`)
-  };
-  $('generate').onclick=()=>{if(formulaValid())generateFrom([{tokens:tokens.map(t=>({...t})),count:chosenCount}])};
-  $('generateBank').onclick=()=>{if(bank.length)generateFrom(bank.map(r=>({tokens:r.tokens.map(t=>({...t})),count:r.count})))};
-  $('columnCount').onchange=renderPreview;
-  $('printProblems').onclick=()=>printSheet(false);
-  $('printAnswers').onclick=()=>printSheet(true);
-
-  function closePanels(){
-    document.querySelectorAll('.panel-popover').forEach(p=>p.hidden=true);
-    document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-expanded','false'));
-  }
-  function openView(view){
-    if(view==='preview'){
-      closePanels();
-      $('previewSection').scrollIntoView({behavior:'smooth',block:'nearest'});
-      return;
-    }
-    const panel=document.querySelector(`[data-panel="${view}"]`);
-    if(!panel)return;
-    const wasOpen=!panel.hidden;
-    closePanels();
-    if(!wasOpen){
-      panel.hidden=false;
-      document.querySelector(`[data-view="${view}"]`).setAttribute('aria-expanded','true');
-    }
-  }
-  function closeDrawer(){
-    $('sidebar').hidden=true;
-    $('backdrop').hidden=true;
-    $('openMenu').setAttribute('aria-expanded','false');
-  }
-  $('openMenu').onclick=()=>{
-    $('sidebar').hidden=false;
-    $('backdrop').hidden=false;
-    $('openMenu').setAttribute('aria-expanded','true');
-    $('closeMenu').focus();
-  };
-  $('closeMenu').onclick=()=>{closeDrawer();$('openMenu').focus()};
-  $('backdrop').onclick=closeDrawer;
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sidebar').hidden)closeDrawer()});
-  document.querySelectorAll('[data-view]').forEach(btn=>btn.onclick=()=>openView(btn.dataset.view));
-  document.addEventListener('click',e=>{
-    if(!e.target.closest('.panel-anchor')&&!e.target.closest('#sidebar'))closePanels();
-  });
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanels()});
-  $('countInput').onchange=()=>{
-    let n=Number($('countInput').value);
-    if(!Number.isInteger(n))n=10;
-    chosenCount=Math.max(1,Math.min(300,n));
-    $('countInput').value=chosenCount;
-  };
-  $('countInput').oninput=()=>{
-    const n=Number($('countInput').value);
-    if(Number.isInteger(n)&&n>=1&&n<=300)chosenCount=n;
-  };
-  $('generateFromSettings').onclick=()=>{if(formulaValid())generateFrom([{tokens:tokens.map(t=>({...t})),count:chosenCount}]);else showMessage('settingsMessage','먼저 나만의 문제에서 계산식을 만들어 주세요.')};
-  $('builderToPreview').onclick=()=>openView('preview');
-  $('settingsToBuilder').onclick=()=>openView('builder');
-
-  renderBuilder();renderBank();renderPreview();
-})();
-</script>
+  <p id="menuNotice" class="drawer-help">현재 데모에서는 기본 사칙연산만 이용할 수 있습니다.</p>
+ </aside>
+ <div id="printMount" aria-hidden="true"></div>
+ <script src="./qr.js"></script>
+ <script src="./generator.js"></script>
+ <script src="./main.js"></script>
 </body>
 </html>
