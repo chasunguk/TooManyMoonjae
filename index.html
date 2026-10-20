@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="tmm-build" content="2026-10-21-qr-bottom-count20-v5">
+ <meta name="tmm-build" content="2026-10-21-raised-header-mobile-answers-v6">
  <meta name="description" content="문제가 많은 게 문제 · 초등 연산 문제지 생성기">
  <title>문제가 많은 게 문제 | TMM</title>
  <style>
@@ -169,6 +169,12 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
  .answer-line{margin:0 0.5mm 0 0!important}
  .answer-value{margin:0 0.5mm 0 0!important;flex-basis:var(--answer-print,20mm)!important}
 }
+
+/* QR, 소제목, 이름란을 하나의 줄로 묶어서 함께 위로 이동 */
+.paper-details{position:relative;top:-12px}
+@media (max-width:800px){.paper-details{top:-8px}}
+@media (max-width:490px){.paper-details{top:-5px}}
+@media print{.paper-details{top:-4mm!important}}
 </style>
 </head>
 <body>

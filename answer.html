@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="tmm-build" content="2026-10-21-answer-only-v1"><meta name="robots" content="noindex,nofollow"><title>TMM 연산 정답지 | 문제가 많은 게 문제</title><style>
+ <meta name="tmm-build" content="2026-10-21-raised-header-mobile-answers-v6"><meta name="robots" content="noindex,nofollow"><title>TMM 연산 정답지 | 문제가 많은 게 문제</title><style>
 :root{color-scheme:light;--ink:#252525;--border:#777;--paper:#fff;--soft:#ededed}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -166,10 +166,35 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
  .answer-line{margin:0 0.5mm 0 0!important}
  .answer-value{margin:0 0.5mm 0 0!important;flex-basis:var(--answer-print,20mm)!important}
 }
+
+/* QR, 소제목, 이름란을 하나의 줄로 묶어서 함께 위로 이동 */
+.paper-details{position:relative;top:-12px}
+@media (max-width:800px){.paper-details{top:-8px}}
+@media (max-width:490px){.paper-details{top:-5px}}
+@media print{.paper-details{top:-4mm!important}}
+
+/* 휴대전화에서는 축소된 A4 대신 읽기 쉬운 정답 목록 표시 */
+.mobile-answer-view{display:none}
+@media screen and (max-width:700px){
+ .answer-page{background:#fff;color:#222}
+ .answer-page .site{padding:22px 18px 45px;max-width:660px}
+ .answer-page .preview{display:none}
+ .answer-page .mobile-answer-view{display:block}
+ .mobile-answer-header{padding:5px 0 15px;border-bottom:2px solid #333;margin-bottom:5px}
+ .mobile-answer-header h1{font-size:clamp(22px,6.2vw,30px);line-height:1.35;letter-spacing:-.6px;text-align:center;margin:0 0 12px}
+ .mobile-answer-header p{font-size:15px;color:#555;text-align:center;margin:0;line-height:1.5}
+ .mobile-answer-list{list-style:none;padding:0;margin:0}
+ .mobile-answer-row{display:flex;gap:8px 12px;align-items:baseline;flex-wrap:wrap;padding:17px 3px;border-bottom:1px solid #ddd;font-variant-numeric:tabular-nums}
+ .mobile-answer-number{flex:0 0 2.4em;font-weight:800;font-size:18px}
+ .mobile-answer-expression{flex:1 1 160px;min-width:0;font-size:clamp(18px,4.7vw,23px);line-height:1.6;overflow-wrap:anywhere}
+ .mobile-answer-result{margin-left:auto;font-size:clamp(22px,5.7vw,28px);font-weight:800;line-height:1.5;white-space:nowrap;color:#111}
+}
+@media print{.mobile-answer-view{display:none!important}}
 </style></head>
 <body class="answer-page">
  <main class="site" aria-label="정답지">
   <div id="error" class="alert" hidden></div>
+  <section id="mobileAnswers" class="mobile-answer-view" aria-label="휴대전화용 정답 목록"></section>
   <section class="preview" aria-label="정답이 표시된 문제지"><div id="sheets" class="papers"></div></section>
  </main>
  <div id="printMount" aria-hidden="true"></div>
@@ -358,6 +383,24 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
  const opts={withAnswers:true,specs,layout,order};
  $('sheets').replaceChildren(...TMM.buildSheets(result.problems,opts));
  $('printMount').replaceChildren(...TMM.buildSheets(result.problems,opts));
+ const mobile=$('mobileAnswers');
+ const opLabels={p:'덧셈',m:'뺄셈',x:'곱셈',d:'나눗셈'};
+ const ops=new Set(specs.flatMap(s=>Array.from(s.template).filter(ch=>opLabels[ch])));
+ const kind=Object.keys(opLabels).filter(ch=>ops.has(ch)).map(ch=>opLabels[ch]).join(' · ')+' 연습';
+ const heading=document.createElement('header');heading.className='mobile-answer-header';
+ const title=document.createElement('h1');title.textContent='문제가 많은 게 문제';
+ const subtitle=document.createElement('p');subtitle.textContent=kind+' · 정답지';
+ heading.append(title,subtitle);
+ const list=document.createElement('ol');list.className='mobile-answer-list';
+ result.problems.forEach((problem,i)=>{
+   const row=document.createElement('li');row.className='mobile-answer-row';
+   const n=document.createElement('span');n.className='mobile-answer-number';n.textContent=(i+1)+'.';
+   const expression=document.createElement('span');expression.className='mobile-answer-expression';expression.textContent=problem.expression+' =';
+   const value=document.createElement('strong');value.className='mobile-answer-result';value.textContent=problem.answer.toLocaleString('ko-KR');
+   row.append(n,expression,value);list.appendChild(row);
+ });
+ mobile.replaceChildren(heading,list);
+
  
 })();
 
