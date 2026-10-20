@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="tmm-build" content="2026-10-21-ui-hotfix"><meta name="robots" content="noindex,nofollow"><title>TMM 연산 정답지 | 문제가 많은 게 문제</title><style>
+ <meta name="tmm-build" content="2026-10-21-answer-only-v1"><meta name="robots" content="noindex,nofollow"><title>TMM 연산 정답지 | 문제가 많은 게 문제</title><style>
 :root{color-scheme:light;--ink:#252525;--border:#777;--paper:#fff;--soft:#ededed}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -78,21 +78,21 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
 .tool:hover:not(:disabled){background:#f7f7f7}
 .papers{display:flex;flex-direction:column;align-items:center;gap:25px}
 .paper{width:min(100%,794px);aspect-ratio:210/297;background:var(--paper);box-shadow:0 3px 16px #0002;display:flex;flex-direction:column;padding:clamp(19px,3vw,49px) clamp(15px,3vw,45px) 19px;position:relative}
-.paper-header{min-height:17%;display:flex;flex-direction:column;flex:none}
+.paper-header{min-height:14%;display:flex;flex-direction:column;flex:none}
 .paper-header h3{text-align:center;font-weight:750;font-size:clamp(15px,2.5vw,25px);margin:0 0 15px}
 .paper-details{display:grid;grid-template-columns:minmax(0,1fr) auto 95px;align-items:start;gap:14px}
 .paper-template{font-size:clamp(9px,1.22vw,13px);line-height:1.55;display:flex;gap:7px;align-items:start;min-width:0;overflow-wrap:anywhere}
 .paper-key{font-weight:700;white-space:nowrap}
 .student-name{font-size:clamp(9px,1.25vw,14px);white-space:nowrap}
-.name-line{display:inline-block;width:80px;border-bottom:1px solid #444;height:.95em;vertical-align:baseline}
+.name-line{display:inline-block;width:118px;border-bottom:1px solid #444;height:.95em;vertical-align:baseline}
 .qr-box{width:85px;height:85px;justify-self:end;margin-top:-5px}
 .qr-box svg{display:block;width:100%;height:100%}
-.question-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr));grid-template-rows:repeat(var(--rows,10),minmax(0,1fr));gap:1px 13px}
+.question-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr));grid-template-rows:repeat(var(--rows,10),minmax(0,1fr));gap:1px 13px;padding-bottom:2.5%}
 .question{min-width:0;display:flex;align-items:center;gap:7px;font-size:clamp(9px,1.3vw,var(--problem-font,16px));line-height:1.5;overflow-wrap:anywhere}
-.question-number{flex:none}
-.question-expression{min-width:0}
-.answer-line{display:inline-block;width:clamp(23px,4vw,65px);border-bottom:1px solid #333;vertical-align:baseline;height:.9em;margin:0 2px}
-.answer-value{font-weight:750}
+.question-number{flex:0 0 2.1em;font-weight:800;font-variant-numeric:tabular-nums}
+.question-expression{min-width:0;flex:1}
+.answer-line{display:block;flex:0 0 var(--answer-width,72px);width:var(--answer-width,72px);border-bottom:1px solid #333;height:.9em;margin:0 2px 0 auto}
+.answer-value{font-weight:750;min-width:var(--answer-width,72px);text-align:center;margin-left:auto}
 .paper-foot{text-align:center;margin-top:8px;font-size:11px;color:#777}
 .drawer-bg{position:fixed;inset:0;background:#0004;z-index:20}
 .drawer{position:fixed;top:0;left:0;bottom:0;width:min(320px,88vw);padding:24px;background:#fff;box-shadow:4px 0 15px #0002;z-index:21}
@@ -103,11 +103,13 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
 .drawer nav button:first-child{font-weight:700}
 .drawer nav small{display:block;color:#888;margin-top:3px}
 .drawer-help{font-size:12px;color:#777;margin-top:25px}
-.answer-page .preview{margin-top:10px}
+.answer-page .preview{margin-top:0;border:0;background:transparent;padding:0;min-height:0}
+.answer-page .site{padding-top:20px}
+.answer-page{background:#ededed}
 .answer-page .header-note,.answer-page .paper .qr-box{display:none}
 #printMount{display:none}
-@media(max-width:800px){.site{padding:17px 12px 42px}.builder{grid-template-columns:1fr;gap:14px;padding:15px}.builder-right{border-left:0;border-top:1px solid #ddd;padding:14px 0 0;display:grid;grid-template-columns:minmax(90px,1fr) minmax(160px,2fr);gap:8px 12px;align-items:center}.builder-right>.control-title{grid-column:1;grid-row:1;font-size:14px}.builder-right>input{grid-column:1;grid-row:2}.difficulty-field{grid-column:2;grid-row:1/3;margin:0}.page-setting{grid-column:1/-1}.header h1{font-size:clamp(18px,3.5vw,29px)}.header-note{font-size:10px}.preview{padding:12px 9px 22px}.paper{padding:clamp(12px,3vw,22px)}.paper-details{grid-template-columns:minmax(0,1fr) auto 65px;gap:7px}.qr-box{width:58px;height:58px}.name-line{width:52px}.question{font-size:clamp(8px,2vw,var(--problem-font,16px));gap:3px}.answer-line{width:clamp(17px,4vw,40px)}.paper-header h3{margin-bottom:9px}.paper-header{min-height:19%}.tooltip{min-width:220px}.type-row{flex-wrap:wrap}}
-@media(max-width:490px){.header{grid-template-columns:34px 1fr 14px}.header-note,.menu-label{display:none}.header h1{white-space:normal;font-size:20px}.key-row{gap:5px;margin-bottom:6px}.key{font-size:11px;min-height:39px;padding:4px 3px}.key.operator{font-size:19px}.expression{font-size:14px;min-height:45px}.builder{padding:12px}.preview-heading{flex-wrap:wrap}.preview-heading h2{font-size:18px}.paper-header h3{font-size:13px}.paper-template,.student-name{font-size:8px}.paper-details{grid-template-columns:minmax(0,1fr) auto 42px;gap:3px}.paper-key{display:none}.qr-box{width:40px;height:40px}.name-line{width:30px}.paper-header{min-height:22%}.question{font-size:8px}.question-grid{gap:0 3px}.question-number{font-size:inherit}.answer-line{width:15px}.paper-foot{font-size:8px}.composition-footer{flex-direction:column;align-items:stretch}.generate-button{width:100%}.type-row{gap:7px}.type-formula{flex-basis:100%}.tooltip{min-width:190px;font-size:11px}.tooltip span{white-space:normal}}
+@media(max-width:800px){.site{padding:17px 12px 42px}.builder{grid-template-columns:1fr;gap:14px;padding:15px}.builder-right{border-left:0;border-top:1px solid #ddd;padding:14px 0 0;display:grid;grid-template-columns:minmax(90px,1fr) minmax(160px,2fr);gap:8px 12px;align-items:center}.builder-right>.control-title{grid-column:1;grid-row:1;font-size:14px}.builder-right>input{grid-column:1;grid-row:2}.difficulty-field{grid-column:2;grid-row:1/3;margin:0}.page-setting{grid-column:1/-1}.header h1{font-size:clamp(18px,3.5vw,29px)}.header-note{font-size:10px}.preview{padding:12px 9px 22px}.paper{padding:clamp(12px,3vw,22px)}.paper-details{grid-template-columns:minmax(0,1fr) auto 65px;gap:7px}.qr-box{width:58px;height:58px}.name-line{width:70px}.question{font-size:clamp(8px,2vw,var(--problem-font,16px));gap:3px}.answer-line{flex-basis:clamp(17px,4vw,40px);width:clamp(17px,4vw,40px)}.paper-header h3{margin-bottom:9px}.paper-header{min-height:17%}.tooltip{min-width:220px}.type-row{flex-wrap:wrap}}
+@media(max-width:490px){.header{grid-template-columns:34px 1fr 14px}.header-note,.menu-label{display:none}.header h1{white-space:normal;font-size:20px}.key-row{gap:5px;margin-bottom:6px}.key{font-size:11px;min-height:39px;padding:4px 3px}.key.operator{font-size:19px}.expression{font-size:14px;min-height:45px}.builder{padding:12px}.preview-heading{flex-wrap:wrap}.preview-heading h2{font-size:18px}.paper-header h3{font-size:13px}.paper-template,.student-name{font-size:8px}.paper-details{grid-template-columns:minmax(0,1fr) auto 42px;gap:3px}.paper-key{display:none}.qr-box{width:40px;height:40px}.name-line{width:40px}.paper-header{min-height:19%}.question{font-size:8px}.question-grid{gap:0 3px}.question-number{font-size:inherit}.answer-line{flex-basis:15px;width:15px}.paper-foot{font-size:8px}.composition-footer{flex-direction:column;align-items:stretch}.generate-button{width:100%}.type-row{gap:7px}.type-formula{flex-basis:100%}.tooltip{min-width:190px;font-size:11px}.tooltip span{white-space:normal}}
 @media print{
  @page{size:A4 portrait;margin:0}
  html,body{margin:0!important;padding:0!important;background:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -115,16 +117,16 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
  #printMount{display:block!important}
  .paper{width:210mm!important;height:297mm!important;max-height:297mm!important;min-height:297mm!important;aspect-ratio:auto!important;box-shadow:none!important;break-after:page;page-break-after:always;padding:13mm 14mm 11mm!important}
  .paper:last-child{break-after:auto;page-break-after:auto}
- .paper-header{min-height:45mm!important}
+ .paper-header{min-height:38mm!important}
  .paper-header h3{font-size:17pt!important;margin:0 0 7mm!important}
  .paper-details{grid-template-columns:minmax(0,1fr) auto 28mm!important;gap:5mm!important}
  .paper-template,.student-name{font-size:10pt!important}
  .paper-key{display:inline!important}
- .name-line{width:20mm!important}
+ .name-line{width:30mm!important}
  .qr-box{width:26mm!important;height:26mm!important;margin-top:-2mm!important}
- .question-grid{gap:0 3mm!important}
+ .question-grid{gap:0 3mm!important;padding-bottom:6mm!important}
  .question{font-size:min(11pt,var(--problem-font,16px))!important;line-height:1.5!important}
- .answer-line{width:15mm!important;border-bottom:0.3mm solid #333!important}
+ .answer-line{flex-basis:var(--answer-print,20mm)!important;width:var(--answer-print,20mm)!important;border-bottom:0.3mm solid #333!important}
  .paper-foot{font-size:8pt!important}
 }
 
@@ -141,10 +143,9 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
 
 </style></head>
 <body class="answer-page">
- <main class="site">
-  <header class="header"><a href="./index.html" class="menu-trigger">← 문제 만들기로</a><h1>문제가 많은 게 문제</h1><div></div></header>
+ <main class="site" aria-label="정답지">
   <div id="error" class="alert" hidden></div>
-  <section class="preview" aria-labelledby="answerTitle"><div class="preview-heading"><h2 id="answerTitle">정답지</h2><div class="preview-tools"><button class="tool" id="printAnswers" type="button">정답지 인쇄 / PDF</button></div></div><div id="sheets" class="papers"></div></section>
+  <section class="preview" aria-label="정답이 표시된 문제지"><div id="sheets" class="papers"></div></section>
  </main>
  <div id="printMount" aria-hidden="true"></div>
  <script>
@@ -274,20 +275,35 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
  function buildSheets(problems,opts){
    const {withAnswers=false,qrUrl='',specs=[],layout={cols:2,rows:10}}=opts;
    const cols=layout.cols,rows=layout.rows,perPage=cols*rows,total=Math.max(1,Math.ceil(problems.length/perPage));
-   const printed=specs.slice(0,3).map(s=>`${labelTemplate(s.template)} (${DIFFICULTY[s.difficulty]} · ${s.count}문제)`).join(' / ');
-   const summary=printed+(specs.length>3?` 외 ${specs.length-3}개 유형`:'');
+   const opNames={p:'덧셈',m:'뺄셈',x:'곱셈',d:'나눗셈'};
+   const usedOps=new Set(specs.flatMap(s=>Array.from(s.template).filter(c=>opNames[c])));
+   const summary=Object.keys(opNames).filter(c=>usedOps.has(c)).map(c=>opNames[c]).join(' · ')+' 연습';
    const pages=[];
    for(let page=0;page<total;page++){
      const offset=page*perPage,subset=problems.slice(offset,offset+perPage);
      const paper=document.createElement('section');paper.className='paper';paper.style.setProperty('--cols',cols);paper.style.setProperty('--rows',rows);
      paper.style.setProperty('--problem-font',cols>=4?'12px':cols===3?'14px':'16px');
+     paper.style.setProperty('--answer-width',cols>=4?'33px':cols===3?'52px':cols===2?'78px':'100px');
+     paper.style.setProperty('--answer-print',cols>=4?'9mm':cols===3?'14mm':cols===2?'21mm':'27mm');
      paper.setAttribute('aria-label',`${page+1}번째 A4 ${withAnswers?'정답지':'문제지'}`);
-     paper.innerHTML=`<div class="paper-header"><h3>문제가 많은 게 문제${withAnswers?' · 정답지':''}</h3><div class="paper-details"><div class="paper-template"><span class="paper-key">계산식</span><span>${escapeHtml(summary||'　')}</span></div><div class="student-name">이름: <span class="name-line"></span></div><div class="qr-box" ${withAnswers||!qrUrl?'hidden':''}></div></div></div><div class="question-grid"></div><div class="paper-foot">${page+1} / ${total}</div>`;
+     paper.innerHTML=`<div class="paper-header"><h3>문제가 많은 게 문제${withAnswers?' · 정답지':''}</h3><div class="paper-details"><div class="paper-template"><span>${escapeHtml(specs.length?summary:'연산 연습')}</span></div><div class="student-name">이름: <span class="name-line"></span></div><div class="qr-box" ${withAnswers||!qrUrl?'hidden':''}></div></div></div><div class="question-grid"></div><div class="paper-foot">${page+1} / ${total}</div>`;
      const grid=paper.querySelector('.question-grid');
+     let useColumnGrouping=false;
+     if(opts.order==='group'&&cols>1&&rows>1&&subset.length){
+       let start=0;
+       const chunks=[];
+       for(const spec of specs){
+         const from=Math.max(start,offset),to=Math.min(start+spec.count,offset+perPage);
+         if(to>from)chunks.push(to-from);
+         start+=spec.count;
+       }
+       useColumnGrouping=chunks.length>0&&chunks.every(n=>n%rows===0);
+     }
      subset.forEach((p,j)=>{
        const line=document.createElement('div');line.className='question';
        const final=withAnswers?`<strong class="answer-value">${p.answer.toLocaleString('ko-KR')}</strong>`:'<span class="answer-line" aria-label="정답칸"></span>';
-       line.innerHTML=`<span class="question-number">${offset+j+1}.</span><span class="question-expression">${escapeHtml(p.expression)} = ${final}</span>`;
+       line.innerHTML=`<span class="question-number">${offset+j+1}.</span><span class="question-expression">${escapeHtml(p.expression)} =</span>${final}`;
+       if(useColumnGrouping){line.style.gridColumn=String(Math.floor(j/rows)+1);line.style.gridRow=String(j%rows+1);}
        grid.appendChild(line);
      });
      if(!withAnswers&&qrUrl){try{drawQr(paper.querySelector('.qr-box'),qrUrl);}catch(e){paper.querySelector('.qr-box').textContent='QR 표시 오류';}}
@@ -307,14 +323,14 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
  const seed=Number(params.get('s'));
  const order=params.get('o')||'group';
  const layout={cols:Number(params.get('c')),rows:Number(params.get('r'))};
- function fail(msg){$('error').hidden=false;$('error').textContent=msg;$('sheets').replaceChildren();$('printAnswers').disabled=true;}
+ function fail(msg){$('error').hidden=false;$('error').textContent=msg;$('sheets').replaceChildren();}
  if(!specs||!params.has('s')||!Number.isInteger(seed)||seed<0||seed>4294967295||!['group','shuffle'].includes(order)||!Number.isInteger(layout.cols)||layout.cols<1||layout.cols>4||!Number.isInteger(layout.rows)||layout.rows<1||layout.rows>15){fail('문제지 정보를 확인할 수 없습니다. 문제지에 인쇄된 QR을 다시 스캔해 주세요.');return;}
  const result=TMM.generateBundle(specs,seed,order);
  if(result.error){fail('정답지를 불러오지 못했습니다. QR을 다시 스캔해 주세요.');return;}
- const opts={withAnswers:true,specs,layout};
+ const opts={withAnswers:true,specs,layout,order};
  $('sheets').replaceChildren(...TMM.buildSheets(result.problems,opts));
  $('printMount').replaceChildren(...TMM.buildSheets(result.problems,opts));
- $('printAnswers').addEventListener('click',()=>window.print());
+ 
 })();
 
 </script>
