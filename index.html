@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="tmm-build" content="2026-10-21-qr-bottom-autocount-v4">
+ <meta name="tmm-build" content="2026-10-21-qr-bottom-count20-v5">
  <meta name="description" content="문제가 많은 게 문제 · 초등 연산 문제지 생성기">
  <title>문제가 많은 게 문제 | TMM</title>
  <style>
@@ -145,8 +145,15 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
 @media(max-width:800px){.builder-right{align-self:auto}}
 
 
-/* Align the subtitle and name to the bottom edge of the QR code. */
-.paper-template,.student-name{align-self:end;padding-top:0;line-height:1.4}
+/* A4 header: the subtitle and name are anchored to the QR's lower edge. */
+.paper-details{align-items:end;min-height:85px}
+.paper-template,.student-name{align-self:end;margin:0;padding:0;line-height:1.3}
+.student-name{display:flex;align-items:flex-end;gap:5px}
+.name-line{position:static;top:auto;display:block;height:0;flex:0 0 118px;border-bottom:1px solid #444;margin:0;padding:0;vertical-align:initial}
+@media(max-width:800px){.paper-details{min-height:58px}.name-line{flex-basis:70px}}
+@media(max-width:490px){.paper-details{min-height:40px}.name-line{flex-basis:40px}}
+@media print{.paper-details{min-height:26mm!important}.name-line{flex-basis:30mm!important}}
+
 /* Fix the equation column width instead of stretching it to the far page edge. */
 .question-expression{flex:0 1 var(--expression-width,130px)}
 .answer-line{margin:0 2px 0 0}
@@ -1774,7 +1781,7 @@ global.QRCode = requireLocal('index');
  $('clear').addEventListener('click',()=>{formula='';show('');refreshFormula();});
  $('addType').addEventListener('click',addType);
  $('generate').addEventListener('click',generate);
- // As long as the teacher has not entered a custom count, follow the A4 grid size.
+ // Start at 20; adjust to rows × columns only when a page dimension changes and count has not been customized.
  $('itemCount').addEventListener('input',()=>{autoItemCount=false;});
  $('itemCount').addEventListener('change',()=>{if(!validCount(countValue()))show('추가할 문제 수는 1~200 사이로 입력해 주세요.');});
  function syncPageCount(){
@@ -1795,7 +1802,7 @@ global.QRCode = requireLocal('index');
  $('menuOpen').addEventListener('click',()=>menu(true));$('menuClose').addEventListener('click',()=>menu(false));$('drawerBg').addEventListener('click',()=>menu(false));
  document.querySelectorAll('[data-menu]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.menu==='basic')menu(false);else $('menuNotice').textContent='이 메뉴는 추후 개발 예정입니다.';}));
  document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false);});
- syncPageCount();refreshFormula();refreshDifficulty();refreshList();
+ $('itemCount').value='20';refreshFormula();refreshDifficulty();refreshList();
  $('sheets').replaceChildren(...TMM.buildSheets([],{specs:[],layout:getLayout()}));
 })();
 

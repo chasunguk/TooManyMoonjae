@@ -142,8 +142,15 @@ button:focus-visible,input:focus-visible{outline:2px solid #444;outline-offset:2
 @media(max-width:800px){.builder-right{align-self:auto}}
 
 
-/* Align the subtitle and name to the bottom edge of the QR code. */
-.paper-template,.student-name{align-self:end;padding-top:0;line-height:1.4}
+/* A4 header: the subtitle and name are anchored to the QR's lower edge. */
+.paper-details{align-items:end;min-height:85px}
+.paper-template,.student-name{align-self:end;margin:0;padding:0;line-height:1.3}
+.student-name{display:flex;align-items:flex-end;gap:5px}
+.name-line{position:static;top:auto;display:block;height:0;flex:0 0 118px;border-bottom:1px solid #444;margin:0;padding:0;vertical-align:initial}
+@media(max-width:800px){.paper-details{min-height:58px}.name-line{flex-basis:70px}}
+@media(max-width:490px){.paper-details{min-height:40px}.name-line{flex-basis:40px}}
+@media print{.paper-details{min-height:26mm!important}.name-line{flex-basis:30mm!important}}
+
 /* Fix the equation column width instead of stretching it to the far page edge. */
 .question-expression{flex:0 1 var(--expression-width,130px)}
 .answer-line{margin:0 2px 0 0}
