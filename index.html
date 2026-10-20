@@ -12,98 +12,128 @@
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
-body{margin:0;background:#fff;color:#171717;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.6}
+body{margin:0;background:#fafafa;color:#1c1c1c;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;font-size:13px;line-height:1.55}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.35;cursor:not-allowed}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #333;outline-offset:3px}
-.page{max-width:760px;margin:0 auto;padding:52px 26px 110px;min-height:100vh}
-.site-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:10px;margin-bottom:47px}
-.menu-toggle{width:fit-content;text-align:left;background:none;border:0;padding:3px 0;font-size:13px}
-.menu-toggle:hover,.text-link:hover{text-decoration:underline;text-underline-offset:5px}
-.brand{text-align:center;line-height:1.5;font-size:18px;white-space:nowrap;font-weight:500;letter-spacing:-.65px}
-.brand small{display:block;font-size:10px;letter-spacing:.7px;color:#888;margin-top:3px;font-weight:400}
-.sections{max-width:470px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:25px 35px;justify-items:center;align-items:center}
-.section-tab{background:none;border:0;padding:4px 5px 7px;min-height:31px;font-weight:400;font-size:14px;white-space:nowrap;border-bottom:1px solid transparent}
-.section-tab:hover,.section-tab.selected{border-bottom:1px solid #333}
-.section-tab:nth-child(3){grid-column:1}
-.view{max-width:680px;margin:62px auto 0;animation:appear .2s ease}
-@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
-.view-header{display:flex;justify-content:space-between;gap:16px;align-items:baseline;margin-bottom:20px;padding-bottom:11px;border-bottom:1px solid #ddd}
+button:disabled{opacity:.36;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #444;outline-offset:2px}
 h1,h2,h3,p{margin-top:0}
-h2{font-size:17px;font-weight:500;margin:0}
-h3{font-size:14px;font-weight:500;margin-bottom:13px}
-.subtle{font-size:12px;color:#777}
-.field-label{font-size:13px;display:block;margin:18px 0 9px}
-.expression{min-height:88px;border:1px solid #dedede;padding:18px;display:flex;align-items:center;line-height:1.9;overflow-wrap:anywhere}
-.expression.is-empty{color:#999;font-size:13px}
-.tokens{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.token{display:inline-block;border-bottom:1px solid #555;padding:1px 2px;font-size:14px;white-space:nowrap}
-.token.op{border:0;font-weight:500;padding:0 4px}
-.cursor{display:inline-block;width:1px;background:#222;height:18px;margin-left:1px}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:10px 0 28px}
-.toolbar-note{color:#888;font-size:12px}
-.mini-actions{display:flex;flex-wrap:wrap;gap:15px}
-.mini-button,.text-link{background:none;border:0;padding:2px 0;font-size:12px;color:#555;white-space:nowrap}
-.key-label{font-size:13px;margin:22px 0 9px}
-.key-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.key{min-height:48px;border:1px solid #bbb;background:#fff;font-size:13px;border-radius:0;padding:8px 3px}
-.key:hover:not(:disabled){border-color:#333;background:#f8f8f8}
-.key.operator{font-size:18px}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.action{background:#fff;border:1px solid #999;padding:11px 16px;min-width:140px;text-align:center;border-radius:0}
-.action:hover:not(:disabled){border-color:#222;text-decoration:underline;text-underline-offset:4px}
-.action.primary{border-color:#333;font-weight:500}
-.field{margin-bottom:24px}
-.input-row{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
-.input-row input,.input-row select{background:#fff;border:1px solid #bbb;padding:8px 10px;border-radius:0;min-height:42px}
-.input-row input{width:105px}
-.field-help{margin-top:7px;font-size:12px;color:#777}
-.message{display:none;margin:17px 0 0;font-size:12px;line-height:1.7;color:#444;white-space:normal}
+.page{width:min(790px,100%);min-height:100vh;margin:auto;background:white;padding:30px 32px 70px}
+.site-header{display:grid;grid-template-columns:1fr 3fr 1fr;align-items:center;margin-bottom:27px}
+.menu-toggle{border:0;background:transparent;text-align:left;padding:8px 0;font-size:12px;width:max-content;color:#4b4b4b}
+.menu-toggle:hover{text-decoration:underline}
+.brand{text-align:center;font-size:25px;font-weight:700;letter-spacing:-1px;white-space:nowrap;line-height:1.35}
+.brand small{display:block;font-size:10px;font-weight:400;letter-spacing:.8px;color:#999;margin-top:3px}
+.top-controls{display:grid;grid-template-columns:1fr 1fr;column-gap:36px;max-width:490px;margin:0 auto 22px}
+.panel-anchor{position:relative;min-width:0}
+.panel-toggle{display:block;width:100%;height:42px;background:white;border:1.5px solid #333;border-radius:3px;font-size:13px;font-weight:600;transition:background .15s}
+.panel-toggle:hover,.panel-toggle[aria-expanded="true"]{background:#f3f3f3}
+.panel-toggle[aria-expanded="true"]{border-bottom-color:#666}
+.panel-toggle .chev{display:inline-block;margin-left:12px;color:#777;font-weight:400;font-size:11px}
+.panel-popover{position:absolute;z-index:4;top:calc(100% + 9px);left:0;width:360px;max-width:min(360px,calc(100vw - 34px));max-height:390px;overflow:auto;background:#fff;border:1.5px solid #444;box-shadow:4px 7px 0 #ececec;padding:16px;border-radius:3px}
+.panel-anchor:last-child .panel-popover{left:auto;right:0}
+.view-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid #dedede}
+h2{font-size:15px;margin:0;font-weight:700}
+h3{font-size:13px;margin-bottom:9px}
+.subtle{font-size:11px;color:#777;font-weight:400}
+.expression{min-height:58px;border:1px solid #c6c6c6;border-radius:2px;display:flex;align-items:center;overflow-wrap:anywhere;padding:11px;font-size:12px}
+.expression.is-empty{color:#999}
+.tokens{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.token{border-bottom:1px solid #666;white-space:nowrap;padding:1px 2px}
+.token.op{border:0;padding:0 1px;font-weight:600}
+.cursor{width:1px;height:15px;background:#666}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 14px}
+.toolbar-note{font-size:10px;color:#888}
+.mini-actions{display:flex;gap:9px;flex-shrink:0}
+.mini-button,.text-link{border:0;background:none;font-size:11px;color:#555;padding:0}
+.mini-button:hover{text-decoration:underline}
+.key-label{font-size:11px;color:#666;margin:12px 0 7px}
+.key-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.key{background:#fff;border:1px solid #c1c1c1;padding:9px 2px;border-radius:2px;min-height:38px;font-size:11px;word-break:keep-all}
+.key.operator{font-size:17px;font-weight:500}
+.key:hover:not(:disabled){background:#f4f4f4;border-color:#333}
+.actions{display:flex;gap:7px;margin-top:15px;flex-wrap:wrap}
+.action{border:1px solid #777;background:#fff;padding:9px 10px;font-size:11px;border-radius:2px;flex:1;min-width:max-content}
+.action.primary{color:#fff;background:#2a2a2a;border-color:#2a2a2a;font-weight:600}
+.action:hover:not(:disabled){opacity:.82}
+.message{display:none;margin:10px 0 0;padding:9px;border:1px solid #ddd;background:#fafafa;color:#444;line-height:1.7;font-size:11px}
 .message.visible{display:block}
-.message.success{color:#333}
-.bank{margin-top:43px;border-top:1px solid #e5e5e5;padding-top:20px}
-.bank-head{display:flex;justify-content:space-between;align-items:baseline;gap:15px}
-.bank-empty{font-size:12px;color:#888;margin-top:9px}
-.bank-list{list-style:none;padding:0;margin:14px 0}
-.bank-item{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid #e5e5e5;padding:12px 0;align-items:center}
-.bank-formula{font-size:13px;word-break:keep-all;overflow-wrap:anywhere}
-.bank-count{font-size:12px;color:#888}
-.bank-footer{display:flex;justify-content:space-between;margin-top:15px;font-size:13px}
-.remove{background:none;border:0;font-size:20px;line-height:1;padding:4px 7px}
-.preview-actions{display:flex;flex-wrap:wrap;gap:14px}
-.print-button{background:none;border:0;border-bottom:1px solid #999;padding:6px 0;font-size:12px}
-.print-button:hover:not(:disabled){border-color:#222}
-.sheet{border:1px solid #ddd;background:#fff;padding:25px;min-height:230px}
-.sheet-header{border-bottom:1px solid #aaa;padding-bottom:12px;margin-bottom:25px}
-.sheet-header h3{text-align:center;font-size:16px;font-weight:500;margin-bottom:12px}
-.sheet-info{display:flex;justify-content:space-between;gap:8px;font-size:11px}
-.sheet-placeholder{text-align:center;color:#888;padding:43px 5px 15px;font-size:13px}
-.sheet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:23px 20px}
-.sheet-grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 10px}
-.problem{font-size:12px;overflow-wrap:anywhere;line-height:1.9}
-.problem-index{margin-right:6px}
-.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.18);z-index:5}
-.drawer{position:fixed;top:0;left:0;bottom:0;width:min(300px,88vw);background:#fff;border-right:1px solid #ccc;padding:34px 24px;z-index:6;box-shadow:4px 0 25px #00000012}
-.drawer-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:32px}
-.drawer-header strong{font-size:16px;font-weight:500}
-.drawer-close{background:none;border:0;font-size:24px;line-height:1}
-.drawer nav{display:flex;flex-direction:column;gap:0}
-.drawer nav button{background:none;border:0;border-bottom:1px solid #eee;text-align:left;padding:17px 2px;font-size:13px}
-.drawer nav button.active{font-weight:600}
-.drawer nav button span{font-size:11px;color:#999;margin-left:8px}
-.drawer-note{font-size:12px;color:#777;margin-top:25px}
-.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:#222;color:#fff;padding:12px 17px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:10;white-space:nowrap;max-width:90vw}
-.toast.show{opacity:1;transform:translate(-50%,0)}
+.field{margin-bottom:12px}
+.field-label{display:block;font-size:11px;color:#777;margin-bottom:6px}
+.input-row{display:flex;align-items:center;gap:8px}
+.input-row input,.input-row select{border:1px solid #aaa;background:#fff;padding:8px 9px;border-radius:2px;font-size:12px;height:38px}
+.input-row input{width:76px}
+.field-help{color:#777;font-size:11px;margin-top:6px}
+.bank{border-top:1px solid #dedede;margin-top:19px;padding-top:14px}
+.bank-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bank-empty{font-size:11px;color:#999}
+.bank-list{list-style:none;padding:0;margin:4px 0}
+.bank-item{display:flex;justify-content:space-between;gap:9px;padding:8px 0;border-bottom:1px solid #eee}
+.bank-formula{font-size:11px;overflow-wrap:anywhere}
+.bank-count{font-size:10px;color:#999}
+.bank-footer{display:flex;justify-content:space-between;font-size:11px;margin-top:10px}
+.remove{border:0;background:none;font-size:17px}
+.preview-frame{border:1.5px solid #333;min-height:645px;padding:17px;background:#fff;border-radius:2px}
+.preview-head{display:flex;justify-content:space-between;align-items:start;gap:14px;min-height:61px}
+.preview-head-title{border:1px solid #555;padding:8px 14px;font-size:12px;font-weight:600;background:#fff;min-width:162px;text-align:center;border-radius:2px}
+.preview-head-title small{display:block;font-weight:400;color:#888;font-size:10px}
+.preview-actions{display:flex;justify-content:flex-end;align-items:center;gap:7px;flex-wrap:wrap}
+.print-button{border:1px solid #bbb;padding:8px 10px;background:#fff;font-size:11px;border-radius:2px}
+.print-button:hover:not(:disabled){border-color:#333;background:#f6f6f6}
+.sheet{min-height:525px;display:flex;flex-direction:column;padding:8px 15px 20px}
+.sheet-header{margin:0 0 28px;padding-bottom:13px;border-bottom:1px solid #d7d7d7}
+.sheet-header h3{font-size:17px;text-align:center;margin-bottom:14px;letter-spacing:-.3px}
+.sheet-info{display:flex;justify-content:space-between;gap:8px;color:#555;font-size:11px}
+.sheet-placeholder{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;min-height:380px}
+.sheet-placeholder strong{font-size:23px;font-weight:500;letter-spacing:-.8px}
+.sheet-placeholder p{font-size:11px;color:#9b9b9b;margin:10px 0 0}
+.sheet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:23px 22px;align-content:start}
+.sheet-grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 12px}
+.problem{font-size:12px;line-height:1.8;overflow-wrap:anywhere}
+.problem-index{margin-right:5px}
+.backdrop{position:fixed;inset:0;background:#0004;z-index:8}
+.drawer{position:fixed;inset:0 auto 0 0;z-index:9;background:white;border-right:1px solid #aaa;width:min(295px,88vw);padding:27px 21px;box-shadow:5px 0 20px #0001}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.drawer-header strong{font-size:15px}
+.drawer-close{background:none;border:0;font-size:24px}
+.drawer nav{display:flex;flex-direction:column}
+.drawer nav button{text-align:left;background:white;border:0;border-bottom:1px solid #eee;padding:16px 2px;font-size:12px}
+.drawer nav button.active{font-weight:700}
+.drawer nav button span{font-size:10px;color:#999;display:block}
+.drawer-note{color:#999;font-size:11px;margin-top:20px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#292929;color:white;padding:10px 15px;z-index:20;font-size:12px;max-width:calc(100% - 30px);opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
 #printArea{display:none}
-@media(max-width:640px){.page{padding:32px 18px 80px}.site-header{margin-bottom:39px}.brand{font-size:15px}.brand small{font-size:9px}.section-tab{font-size:13px}.sections{gap:20px 10px}.view{margin-top:43px}.view-header{display:block}.view-header .subtle{display:block;margin-top:5px}.toolbar{align-items:start;flex-direction:column;gap:8px}.key{font-size:11px;min-height:43px}.key.operator{font-size:17px}.action{flex:1;min-width:130px}.sheet{padding:15px}.problem{font-size:11px}.sheet-grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){
+body{background:#fff}
+.page{padding:22px 13px 50px}
+.site-header{grid-template-columns:1fr 3fr 1fr;margin-bottom:24px}
+.brand{font-size:18px;white-space:normal}
+.brand small{font-size:8px}
+.menu-toggle{font-size:11px}
+.top-controls{gap:12px;margin-bottom:15px;max-width:none}
+.panel-toggle{height:41px;font-size:12px}
+.panel-popover{max-width:calc(100vw - 26px);width:345px}
+.preview-frame{padding:11px;min-height:650px}
+.preview-head{gap:7px;flex-wrap:wrap;min-height:50px;margin-bottom:6px}
+.preview-head-title{min-width:140px;padding:8px;font-size:11px}
+.preview-actions{gap:5px}
+.print-button{font-size:10px;padding:7px}
+.sheet{padding:12px 3px;min-height:480px}
+.sheet-info{font-size:9px}
+.sheet-header h3{font-size:15px}
+.sheet-placeholder{min-height:300px}
+.sheet-grid.cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+.problem{font-size:11px}
+}
+@media(max-width:390px){.preview-actions{width:100%;justify-content:flex-start}.panel-anchor:nth-child(2) .panel-popover{right:0}.preview-frame{min-height:660px}}
 @media print{
 @page{size:A4 portrait;margin:15mm 14mm}
-html,body{background:#fff!important;color:#111;font-family:"Malgun Gothic",sans-serif}
+html,body{background:white!important;color:#111;font-family:"Malgun Gothic",sans-serif}
 .page,.drawer,.backdrop,.toast{display:none!important}
 #printArea{display:block!important}
 .print-head{text-align:center;border-bottom:1px solid #111;padding-bottom:12px;margin-bottom:20px}
-.print-head h1{font-size:18pt;line-height:1.5;font-weight:500;margin:0 0 13px}
+.print-head h1{font-size:18pt;line-height:1.5;margin:0 0 13px;font-weight:500}
 .print-meta{font-size:10pt;display:flex;justify-content:space-between;text-align:left;gap:12px}
 .print-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 26px}
 .print-grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px 12px}
@@ -121,39 +151,47 @@ html,body{background:#fff!important;color:#111;font-family:"Malgun Gothic",sans-
     <div class="brand">문제가 많은 게 문제<small>TOO MANY MOONJAE · TMM</small></div>
     <div></div>
   </header>
-  <nav class="sections" aria-label="메인 메뉴">
-    <button class="section-tab" type="button" data-view="builder" aria-pressed="false">나만의 문제</button>
-    <button class="section-tab" type="button" data-view="settings" aria-pressed="false">문제지 설정</button>
-    <button class="section-tab" type="button" data-view="preview" aria-pressed="false">문제지 미리보기</button>
-  </nav>
-  <section class="view" data-panel="builder" hidden aria-labelledby="builder-title">
-    <div class="view-header"><h2 id="builder-title">나만의 문제</h2><span class="subtle">숫자와 연산을 순서대로 선택하세요.</span></div>
-    <div class="expression is-empty" id="expression" aria-live="polite">숫자 버튼을 눌러 계산식을 만드세요.</div>
-    <div class="toolbar"><span id="formula-hint" class="toolbar-note">숫자부터 시작해 주세요.</span><div class="mini-actions"><button type="button" class="mini-button" id="backspace">한 칸 지우기</button><button type="button" class="mini-button" id="clear">초기화</button></div></div>
-    <div class="key-label">자릿수</div>
-    <div class="key-grid" id="numberKeys"><button class="key" type="button" data-digits="1">한 자리 수</button><button class="key" type="button" data-digits="2">두 자리 수</button><button class="key" type="button" data-digits="3">세 자리 수</button><button class="key" type="button" data-digits="4">네 자리 수</button></div>
-    <div class="key-label">연산</div>
-    <div class="key-grid" id="opKeys"><button class="key operator" type="button" data-op="+">+</button><button class="key operator" type="button" data-op="−">−</button><button class="key operator" type="button" data-op="×">×</button><button class="key operator" type="button" data-op="÷">÷</button></div>
-    <div class="actions"><button type="button" class="action primary" id="generate">문제 생성</button><button type="button" class="action" id="addToBank">이 유형 담기</button><button type="button" class="action" id="builderToPreview">문제지 보기</button></div>
-    <div class="message" id="builderMessage" role="status" aria-live="polite"></div>
-  </section>
-  <section class="view" data-panel="settings" hidden aria-labelledby="settings-title">
-    <div class="view-header"><h2 id="settings-title">문제지 설정</h2><span class="subtle">출력할 문제지의 기본 설정입니다.</span></div>
-    <div class="field"><label class="field-label" for="countInput">문제 개수</label><div class="input-row"><input type="number" id="countInput" min="1" max="300" step="1" value="10"><span class="subtle">문제 (1~300개)</span></div></div>
-    <div class="field"><label class="field-label" for="columnCount">문제지 배치</label><div class="input-row"><select id="columnCount"><option value="2">2열</option><option value="3">3열</option></select></div><p class="field-help">생성된 문제는 A4 문제지와 정답지로 나누어 인쇄할 수 있습니다.</p></div>
-    <div class="actions"><button type="button" class="action primary" id="generateFromSettings">문제 생성</button><button type="button" class="action" id="settingsToBuilder">계산식 만들기</button></div>
-    <div class="message" id="settingsMessage" role="status" aria-live="polite"></div>
-    <div class="bank" aria-labelledby="bank-title">
-      <div class="bank-head"><h3 id="bank-title">담아둔 문제 유형</h3><span class="subtle" id="bankCounter">0문제</span></div>
-      <div class="bank-empty" id="bankEmpty">여러 유형을 섞으려면 '나만의 문제'에서 유형을 담아 주세요.</div>
-      <ul class="bank-list" id="bankList"></ul>
-      <div id="bankFooter" hidden><div class="bank-footer"><span>총 문제 수</span><strong id="bankTotal">0문제</strong></div><div class="actions"><button type="button" class="action" id="generateBank">담아둔 유형 전체 생성</button></div></div>
+  <div class="top-controls" aria-label="문제지 도구">
+    <div class="panel-anchor">
+      <button class="panel-toggle" type="button" data-view="builder" aria-controls="builderPanel" aria-expanded="false">나만의 문제 <span class="chev">▾</span></button>
+      <section class="panel-popover" id="builderPanel" data-panel="builder" hidden aria-labelledby="builder-title">
+        <div class="view-header"><h2 id="builder-title">나만의 문제</h2><span class="subtle">계산식 만들기</span></div>
+        <div class="expression is-empty" id="expression" aria-live="polite">숫자 버튼을 눌러 계산식을 만드세요.</div>
+        <div class="toolbar"><span id="formula-hint" class="toolbar-note">숫자부터 시작해 주세요.</span><div class="mini-actions"><button type="button" class="mini-button" id="backspace">지우기</button><button type="button" class="mini-button" id="clear">초기화</button></div></div>
+        <div class="key-label">자릿수</div>
+        <div class="key-grid" id="numberKeys"><button class="key" type="button" data-digits="1">한 자리 수</button><button class="key" type="button" data-digits="2">두 자리 수</button><button class="key" type="button" data-digits="3">세 자리 수</button><button class="key" type="button" data-digits="4">네 자리 수</button></div>
+        <div class="key-label">연산</div>
+        <div class="key-grid" id="opKeys"><button class="key operator" type="button" data-op="+">+</button><button class="key operator" type="button" data-op="−">−</button><button class="key operator" type="button" data-op="×">×</button><button class="key operator" type="button" data-op="÷">÷</button></div>
+        <div class="actions"><button type="button" class="action primary" id="generate">문제 생성</button><button type="button" class="action" id="addToBank">이 유형 담기</button></div>
+        <div class="actions"><button type="button" class="action" id="builderToPreview">미리보기로 이동</button></div>
+        <div class="message" id="builderMessage" role="status" aria-live="polite"></div>
+      </section>
     </div>
-  </section>
-  <section class="view" id="previewSection" data-panel="preview" hidden aria-labelledby="preview-title">
-    <div class="view-header"><h2 id="preview-title">문제지 미리보기 <span class="subtle" id="previewCount"></span></h2><div class="preview-actions"><button type="button" class="print-button" id="printProblems" disabled>문제지 인쇄 / PDF</button><button type="button" class="print-button" id="printAnswers" disabled>정답지 인쇄 / PDF</button></div></div>
-    <div class="sheet"><div class="sheet-header"><h3>연산 문제지</h3><div class="sheet-info"><span id="sheetDetails">기본 사칙연산</span><span>이름: __________________</span></div></div>
-      <div id="sheetPlaceholder" class="sheet-placeholder">아직 만든 문제가 없습니다.<br>나만의 문제에서 계산식을 만들어 주세요.</div>
+    <div class="panel-anchor">
+      <button class="panel-toggle" type="button" data-view="settings" aria-controls="settingsPanel" aria-expanded="false">문제지 설정 <span class="chev">▾</span></button>
+      <section class="panel-popover" id="settingsPanel" data-panel="settings" hidden aria-labelledby="settings-title">
+        <div class="view-header"><h2 id="settings-title">문제지 설정</h2><span class="subtle">인쇄 및 문제 수량</span></div>
+        <div class="field"><label class="field-label" for="countInput">생성할 문제 개수</label><div class="input-row"><input type="number" id="countInput" min="1" max="300" step="1" value="10"><span class="subtle">개 (1~300)</span></div></div>
+        <div class="field"><label class="field-label" for="columnCount">문제지 배치</label><div class="input-row"><select id="columnCount"><option value="2">2열</option><option value="3">3열</option></select></div></div>
+        <div class="actions"><button type="button" class="action primary" id="generateFromSettings">문제 생성</button><button type="button" class="action" id="settingsToBuilder">계산식 만들기</button></div>
+        <div class="message" id="settingsMessage" role="status" aria-live="polite"></div>
+        <div class="bank" aria-labelledby="bank-title">
+          <div class="bank-head"><h3 id="bank-title">담아둔 문제 유형</h3><span class="subtle" id="bankCounter">0문제</span></div>
+          <div class="bank-empty" id="bankEmpty">여러 유형을 섞으려면 '나만의 문제'에서 유형을 담아 주세요.</div>
+          <ul class="bank-list" id="bankList"></ul>
+          <div id="bankFooter" hidden><div class="bank-footer"><span>총 문제 수</span><strong id="bankTotal">0문제</strong></div><div class="actions"><button type="button" class="action" id="generateBank">담아둔 유형 전체 생성</button></div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <section class="preview-frame" id="previewSection" aria-labelledby="preview-title">
+    <div class="preview-head">
+      <div class="preview-head-title" id="preview-title">문제지 미리보기 <small id="previewCount">항상 표시</small></div>
+      <div class="preview-actions"><button type="button" class="print-button" id="printProblems" disabled>문제지 인쇄 / PDF</button><button type="button" class="print-button" id="printAnswers" disabled>정답지 인쇄 / PDF</button></div>
+    </div>
+    <div class="sheet">
+      <div class="sheet-header"><h3>연산 문제지</h3><div class="sheet-info"><span id="sheetDetails">기본 사칙연산</span><span>이름: __________________</span></div></div>
+      <div id="sheetPlaceholder" class="sheet-placeholder"><strong>문제들</strong><p>상단의 '나만의 문제'에서 문제를 만들어 보세요.</p></div>
       <div id="sheetGrid" class="sheet-grid" hidden></div>
     </div>
     <div class="message" id="outputMessage" aria-live="polite" role="status"></div>
@@ -308,10 +346,10 @@ html,body{background:#fff!important;color:#111;font-family:"Malgun Gothic",sans-
         result.push(...local);
         if(local.length<recipe.count)shortages.push(`${formulaString(recipe.tokens)}: ${recipe.count}문제 중 ${local.length}문제`);
       }
-      problems=result;renderPreview();openView('preview');
-      if(shortages.length){const msg=result.length?`조건에 맞는 고유 문제를 모두 만들지 못했습니다. 생성된 ${result.length}문제만 표시합니다. ${shortages.join(' / ')}. 자릿수나 연산을 바꿔보세요.`:'현재 계산식으로는 조건에 맞는 문제를 생성하지 못했습니다. 음수 또는 나머지가 없는 정수 계산을 만들 수 있는지 자릿수와 연산을 확인해 주세요.';showMessage('outputMessage',msg)}
+      problems=result;renderPreview();if(result.length)closePanels();
+      if(shortages.length){const msg=result.length?`조건에 맞는 고유 문제를 모두 만들지 못했습니다. 생성된 ${result.length}문제만 표시합니다. ${shortages.join(' / ')}. 자릿수나 연산을 바꿔보세요.`:'현재 계산식으로는 조건에 맞는 문제를 생성하지 못했습니다. 음수 또는 나머지가 없는 정수 계산을 만들 수 있는지 자릿수와 연산을 확인해 주세요.';showMessage('outputMessage',msg);if(!result.length)showMessage('builderMessage',msg)}
       else showMessage('outputMessage',`완성! ${result.length}문제를 만들었습니다. 문제지와 정답지를 각각 인쇄하거나 PDF로 저장할 수 있어요.`,true);
-      if(result.length)requestAnimationFrame(()=>$('previewSection').scrollIntoView({behavior:'smooth',block:'start'}));
+      if(result.length)requestAnimationFrame(()=>$('previewSection').scrollIntoView({behavior:'smooth',block:'nearest'}));
     } catch(e) {showMessage('outputMessage','문제 생성 중 오류가 발생했습니다. 계산식을 다시 확인해 주세요.');console.error(e)}
     finally {busy=false;renderBuilder()}
   }
@@ -381,13 +419,24 @@ html,body{background:#fff!important;color:#111;font-family:"Malgun Gothic",sans-
   $('printProblems').onclick=()=>printSheet(false);
   $('printAnswers').onclick=()=>printSheet(true);
 
+  function closePanels(){
+    document.querySelectorAll('.panel-popover').forEach(p=>p.hidden=true);
+    document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-expanded','false'));
+  }
   function openView(view){
-    document.querySelectorAll('.view').forEach(p=>{p.hidden=p.dataset.panel!==view});
-    document.querySelectorAll('[data-view]').forEach(btn=>{
-      const selected=btn.dataset.view===view;
-      btn.classList.toggle('selected',selected);
-      btn.setAttribute('aria-pressed',String(selected));
-    });
+    if(view==='preview'){
+      closePanels();
+      $('previewSection').scrollIntoView({behavior:'smooth',block:'nearest'});
+      return;
+    }
+    const panel=document.querySelector(`[data-panel="${view}"]`);
+    if(!panel)return;
+    const wasOpen=!panel.hidden;
+    closePanels();
+    if(!wasOpen){
+      panel.hidden=false;
+      document.querySelector(`[data-view="${view}"]`).setAttribute('aria-expanded','true');
+    }
   }
   function closeDrawer(){
     $('sidebar').hidden=true;
@@ -404,6 +453,10 @@ html,body{background:#fff!important;color:#111;font-family:"Malgun Gothic",sans-
   $('backdrop').onclick=closeDrawer;
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sidebar').hidden)closeDrawer()});
   document.querySelectorAll('[data-view]').forEach(btn=>btn.onclick=()=>openView(btn.dataset.view));
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.panel-anchor')&&!e.target.closest('#sidebar'))closePanels();
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanels()});
   $('countInput').onchange=()=>{
     let n=Number($('countInput').value);
     if(!Number.isInteger(n))n=10;
