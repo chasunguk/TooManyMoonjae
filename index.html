@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="description" content="TMM · 문제가 많은 게 문제 — 계산기처럼 사칙연산 문제를 만들어 A4로 인쇄하는 무료 문제지 생성기">
+ <meta name="description" content="문제가 많은 게 문제 · 초등 연산 문제지 생성기">
  <title>문제가 많은 게 문제 | TMM</title>
  <link rel="stylesheet" href="./styles.css">
 </head>
@@ -14,9 +14,9 @@
    <h1><a class="brand-text" href="./index.html">문제가 많은 게 문제</a></h1>
    <span class="header-note">TMM · DEMO</span>
   </header>
-  <section class="builder" aria-label="문제 생성용 계산기">
+  <section class="builder" aria-label="계산식 조립기">
    <div class="builder-left">
-    <div id="expression" class="expression" aria-live="polite">세 자리 수 + 두 자리 수</div>
+    <div id="expression" class="expression" aria-label="조립한 계산식" aria-live="polite"></div>
     <div class="key-row numbers" aria-label="자릿수 버튼">
      <button class="key" data-digit="1" type="button">한 자리 수</button>
      <button class="key" data-digit="2" type="button">두 자리 수</button>
@@ -30,43 +30,51 @@
      <button class="key operator" data-op="d" type="button">÷</button>
     </div>
     <div class="key-row actions">
-     <button id="generate" class="key primary" type="button">문제 생성</button>
-     <button id="backspace" class="key" type="button">뒤로</button>
+     <button id="addType" class="key primary" type="button">+ 유형 추가</button>
+     <button id="backspace" class="key" type="button">한 칸 지우기</button>
      <button id="clear" class="key" type="button">전체 지우기</button>
     </div>
    </div>
    <div class="builder-right">
-    <label for="count">문제 수</label>
-    <input id="count" type="number" min="1" max="200" step="1" value="20" inputmode="numeric">
-    <p class="caption">한 장에 2열 × 10문제<br>21문제부터 다음 장에 배치됩니다.</p>
+    <label for="itemCount" class="control-title">추가할 문제 수</label>
+    <input id="itemCount" type="number" min="1" max="200" step="1" value="10" inputmode="numeric">
+    <fieldset class="difficulty-field">
+     <legend>난이도</legend>
+     <div class="difficulty-group" role="group" aria-label="문제 난이도">
+      <div class="difficulty-wrapper"><button class="difficulty-button" type="button" data-level="low" aria-describedby="tip-low">하</button><div id="tip-low" class="tooltip" role="tooltip"><strong>하 · 쉬운 계산</strong><span>덧·뺄셈: 받아올림·받아내림 없음</span><span>곱셈: 받아올림 없음</span><span>나눗셈: 중간 나머지 없음</span></div></div>
+      <div class="difficulty-wrapper"><button class="difficulty-button selected" type="button" data-level="mid" aria-pressed="true" aria-describedby="tip-mid">중</button><div id="tip-mid" class="tooltip" role="tooltip"><strong>중 · 보통 계산</strong><span>덧·뺄셈: 받아올림·받아내림 1회</span><span>곱셈: 받아올림 1회</span><span>나눗셈: 중간 나머지 1회</span></div></div>
+      <div class="difficulty-wrapper"><button class="difficulty-button" type="button" data-level="high" aria-describedby="tip-high">상</button><div id="tip-high" class="tooltip" role="tooltip"><strong>상 · 어려운 계산</strong><span>덧·뺄셈: 받아올림·받아내림 2회 이상</span><span>곱셈: 받아올림 여러 번</span><span>나눗셈: 중간 나머지 여러 번</span></div></div>
+     </div>
+     <p class="hint">버튼에 마우스를 올리거나 키보드로 선택하면 기준이 표시됩니다.</p>
+    </fieldset>
+    <div class="page-setting">
+     <span class="setting-title">한 페이지 구성</span>
+     <div class="layout-fields">
+      <label for="columns">열 <input id="columns" type="number" min="1" max="4" step="1" value="2" inputmode="numeric"></label>
+      <span aria-hidden="true">×</span>
+      <label for="rows">행 <input id="rows" type="number" min="1" max="15" step="1" value="10" inputmode="numeric"></label>
+     </div>
+     <p class="caption" id="layoutInfo"></p>
+    </div>
+   </div>
+   <div class="composition">
+    <div class="composition-heading"><h2>문제 구성표</h2><span id="compositionTotal">총 0문제</span></div>
+    <div id="typeList" class="type-list" aria-live="polite"><p class="empty-msg">계산식을 조립한 뒤 <b>유형 추가</b>를 눌러 주세요.</p></div>
+    <div class="composition-footer">
+     <fieldset class="order-controls"><legend>문제 배치</legend><label><input type="radio" name="order" value="group" checked> 유형별 묶기</label><label><input type="radio" name="order" value="shuffle"> 무작위 섞기</label></fieldset>
+     <button id="generate" class="key primary generate-button" type="button" disabled>문제지 생성하기</button>
+    </div>
    </div>
   </section>
   <div id="status" class="alert" role="status" aria-live="polite" hidden></div>
   <section class="preview" aria-labelledby="previewTitle">
-   <div class="preview-heading">
-    <h2 id="previewTitle">문제지 미리보기</h2>
-    <div class="preview-tools">
-     <button class="tool" type="button" id="openAnswers">정답지 열기 ↗</button>
-     <button class="tool" type="button" id="printProblems">문제지 인쇄 / PDF</button>
-    </div>
-   </div>
+   <div class="preview-heading"><h2 id="previewTitle">문제지 미리보기</h2><div class="preview-tools"><button class="tool" type="button" id="openAnswers" disabled>정답지 열기 ↗</button><button class="tool" type="button" id="printProblems" disabled>문제지 인쇄 / PDF</button></div></div>
    <div id="sheets" class="papers"></div>
   </section>
  </main>
  <div id="drawerBg" class="drawer-bg" hidden></div>
- <aside id="drawer" class="drawer" hidden aria-label="문제 유형 메뉴">
-  <div class="drawer-top"><strong>문제 유형</strong><button id="menuClose" type="button" aria-label="메뉴 닫기">×</button></div>
-  <nav>
-   <button type="button" data-menu="basic">기본 사칙연산</button>
-   <button type="button" data-menu="advanced">응용 사칙연산<small>추후 개발 예정</small></button>
-   <button type="button" data-menu="decimal">소수의 사칙연산<small>추후 개발 예정</small></button>
-   <button type="button" data-menu="fraction">분수의 사칙연산<small>추후 개발 예정</small></button>
-  </nav>
-  <p id="menuNotice" class="drawer-help">현재 데모에서는 기본 사칙연산만 이용할 수 있습니다.</p>
- </aside>
+ <aside id="drawer" class="drawer" hidden aria-label="문제 유형 메뉴"><div class="drawer-top"><strong>문제 유형</strong><button id="menuClose" type="button" aria-label="메뉴 닫기">×</button></div><nav><button type="button" data-menu="basic">기본 사칙연산</button><button type="button" data-menu="advanced">응용 사칙연산<small>추후 개발 예정</small></button><button type="button" data-menu="decimal">소수의 사칙연산<small>추후 개발 예정</small></button><button type="button" data-menu="fraction">분수의 사칙연산<small>추후 개발 예정</small></button></nav><p id="menuNotice" class="drawer-help">현재 데모에서는 기본 사칙연산만 이용할 수 있습니다.</p></aside>
  <div id="printMount" aria-hidden="true"></div>
- <script src="./qr.js"></script>
- <script src="./generator.js"></script>
- <script src="./main.js"></script>
+ <script src="./qr.js"></script><script src="./generator.js"></script><script src="./main.js"></script>
 </body>
 </html>
