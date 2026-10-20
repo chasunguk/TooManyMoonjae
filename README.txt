@@ -1,25 +1,14 @@
-TMM - 문제가 많은 게 문제 | 화면 오류 수정판
+TMM 업데이트 (난이도·문제지 위치·유형별 배치)
 
-GitHub Pages 저장소: https://github.com/chasunguk/TooManyMoonjae
+GitHub Pages의 TooManyMoonjae 저장소 최상위에 index.html과 answer.html을 교체 업로드하세요.
+두 HTML 파일만으로 실행됩니다. QR-LICENSE.txt는 사용된 QR 생성 라이브러리의 라이선스 문서입니다.
 
-업로드는 index.html 과 answer.html 두 파일만 하면 됩니다.
-이전 styles.css, generator.js, main.js, answers.js, qr.js는 더 이상 필요하지 않습니다.
-남아 있어도 오류는 나지 않지만, 삭제해도 됩니다.
+변경 사항
+- 난이도 상/중/하의 마우스 오버 설명에서 덧셈과 뺄셈을 각각 별도의 줄로 표시
+- 문제지 내 문제들을 조금 위로 이동 (화면 미리보기 + A4 인쇄 + QR 정답지 동일 적용)
+- 문제 번호 굵게 표시, 답안 실선의 시작 위치 및 길이 일치
+- 문제지 제목 아래의 복잡한 식 설명을 '곱셈 · 나눗셈 연습'과 같은 간단한 이름으로 변경
+- 유형별 묶기 선택 시 유형 개수가 행 수로 나누어떨어지면 열별로 자동 정렬
+  (열 기준 배치가 어려우면 기존처럼 행 순서대로 연속 배치)
 
-교체 방법
-1. GitHub 저장소 Code 화면에서 index.html을 열고 연필(Edit) 아이콘을 누릅니다.
-2. 새로운 index.html의 전체 내용을 붙여넣고 Commit changes 합니다.
-3. 같은 방법으로 answer.html도 교체합니다.
-4. GitHub Pages 배포가 끝나면 Ctrl+Shift+R로 강력 새로고침합니다.
-
-또는 GitHub 저장소에서 Add file -> Upload files를 사용하여 두 파일을 덮어쓸 수 있습니다.
-기존 파일이 이미 있을 때 Github 웹 인터페이스가 업로드 충돌을 표시하면 각각 파일 편집을 이용하십시오.
-
-수정사항
-- 스타일과 동작 스크립트를 각 HTML 안에 내장하여 파일 버전 혼선 방지
-- 난이도 툴팁을 기본 비표시, 마우스 호버 / 키보드 포커스 시에만 표시
-- 계산기와 설정 영역의 불필요한 늘어남 방지
-- 원래 기능(유형별 수량, 난이도, A4 미리보기, QR 정답지) 유지
-
-참고: QR은 GitHub Pages에서 배포한 페이지 주소를 가리킵니다.
-로컬 파일로 열면 QR이 로컬 file:// 주소로 생성될 수 있으므로 온라인 배포 뒤 시험하십시오.
+QR은 GitHub Pages 등 인터넷에 공개된 환경에서 접근 가능합니다.
